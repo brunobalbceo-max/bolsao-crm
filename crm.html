@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bolsão Informática 2.0 — CRM</title>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -1039,18 +1040,35 @@ function renderKanban() {
   const f=getF(), board=document.getElementById('kanban-board'); board.innerHTML='';
   ETAPAS.forEach(et => {
     const cards=f.filter(l=>(l.etapa||'Novo Lead')===et);
-    const col=document.createElement('div'); col.className='col';
-    col.innerHTML=`<div class="col-head"><div class="col-dot" style="background:${COL_CLR[et]}"></div><div class="col-title">${et}</div><div class="col-count">${cards.length}</div></div><div class="col-body">${cards.length?cards.map(cHTML).join(''):'<div style="text-align:center;padding:18px;color:var(--txt3);font-size:12px">Vazio</div>'}</div>`;
+    const col=document.createElement(\'div\');col.className=\'col\';
+    col.innerHTML=`<div class="col-head"><div class="col-dot" style="background:${COL_CLR[et]}"></div><div class="col-title">${et}</div><div class="col-count">${cards.length}</div></div><div class="col-body" id="kanban-col-${et.replace(/\s/g, \'\')}" data-etapa-name="${et}">${cards.length?cards.map(cHTML).join(\'\'):\'\'<div style="text-align:center;padding:18px;color:var(--txt3);font-size:12px">Vazio</div>\'\'}</div>`;
     board.appendChild(col);
-  });
-}
-function cHTML(l) {
-  const sc=SCORE_M[l.score]||'frio', tags=[l.obj,l.nivel,l.periodo].filter(Boolean);
-  const iN=(Date.now()-(l.ts||0))<120000;
-  return `<div class="lead-card${iN?' new-pulse':''}" onclick="openModal('${l.id}')">
-    ${iN?'<div class="new-badge">novo</div>':''}
-    <div class="lc-top"><div class="lc-nome">${esc(l.nome)}</div>${l.score?`<div class="lc-score ${sc}">${l.score}</div>`:''}</div>
-    <div class="lc-info"><div class="lc-row">📱 ${esc(l.wpp)}</div>${l.email?`<div class="lc-row">📧 ${esc(l.email)}</div>`:''}</div>
+
+    // Initialize Sortable.js for each column
+    new Sortable(col.querySelector(\".col-body\"), {
+      group: \'kanban\',
+      animation: 150,
+      ghostClass: \'sortable-ghost\',
+      onEnd: function (evt) {
+        const leadId = evt.item.dataset.leadId;
+        const oldEtapa = evt.from.dataset.etapaName;
+        const newEtapa = evt.to.dataset.etapaName;
+
+        if (oldEtapa !== newEtapa) {
+          const lead = leads.find(l => l.id === leadId);
+          if (lead) {
+            lead.etapa = newEtapa;
+            saveLeads();
+            toast(`Lead ${lead.nome} movido para ${newEtapa}!`, \'success\');
+            if (newEtapa === \'Matriculado\') {
+              setTimeout(() => triggerCelebration(lead.nome.split(\' \')[0]), 300);
+            }
+          }
+        }
+        render(); // Re-render to update counts and ensure consistency
+      }
+    });
+  });="lc-info"><div class="lc-row">📱 ${esc(l.wpp)}</div>${l.email?`<div class="lc-row">📧 ${esc(l.email)}</div>`:''}</div>
     ${tags.length?`<div class="lc-tags">${tags.map(t=>`<span class="lc-tag">${esc(t)}</span>`).join('')}</div>`:''}
     <div class="lc-footer"><span class="lc-data">${l.data||''} ${l.hora||''}</span><span class="lc-action">→ ${esc(l.proximaAcao||'—')}</span></div>
   </div>`;
