@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolsão Informática 2.0</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{min-height:100%;font-family:'Inter',sans-serif;font-size:14px}
+:root{
+  --gold:#F5C842;--gold2:#D4A800;--gold-dim:rgba(245,200,66,.1);--gold-brd:rgba(245,200,66,.25);
+  --bg0:#08080D;--bg1:#0F0F16;--bg2:#15151E;--bg3:#1A1A25;--bg4:#20202C;--bg5:#272734;
+  --border:#252530;--border2:#2E2E3C;--border3:#383848;
+  --txt:#EDEDF5;--txt2:#9898B0;--txt3:#52526A;
+  --green:#22C55E;--gd:rgba(34,197,94,.12);--gb:rgba(34,197,94,.25);
+  --blue:#3B82F6;--bd:rgba(59,130,246,.12);--bb:rgba(59,130,246,.25);
+  --orange:#F97316;--od:rgba(249,115,22,.12);--ob:rgba(249,115,22,.25);
+  --red:#EF4444;--rd:rgba(239,68,68,.12);--rb:rgba(239,68,68,.25);
+  --purple:#A855F7;--pd:rgba(168,85,247,.12);--pb:rgba(168,85,247,.25);
+  --teal:#14B8A6;--teal-d:rgba(20,184,166,.12);--teal-b:rgba(20,184,166,.25);
+  --r:6px;--r2:10px;--r3:14px;--r4:18px;--sb:220px;
+}
+body{background:var(--bg0);color:var(--txt);overflow-x:hidden}
+
+/* ═══ FORMULÁRIO ═══ */
+#form-screen{min-height:100vh;padding:32px 16px 100px;display:flex;flex-direction:column;align-items:center}
+.fp{width:100%;max-width:520px}
+.hero{text-align:center;margin-bottom:36px}
+.logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:24px}
+.logo-ico{width:44px;height:44px;border-radius:13px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px}
+.logo-txt{font-size:16px;font-weight:800;color:var(--txt);text-align:left;line-height:1.2;letter-spacing:-.3px}
+.logo-txt span{font-size:11px;font-weight:400;color:var(--txt3);display:block}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid var(--gold-brd);color:var(--gold);font-size:11px;font-weight:600;padding:5px 14px;border-radius:100px;margin-bottom:18px}
+.hero h1{font-size:clamp(22px,5vw,34px);font-weight:800;color:var(--txt);letter-spacing:-1px;line-height:1.15;margin-bottom:12px}
+.hero h1 em{color:var(--gold);font-style:normal}
+.hero p{font-size:14px;color:var(--txt2);line-height:1.7;max-width:400px;margin:0 auto}
+.steps{display:flex;align-items:center;justify-content:center;margin-bottom:28px}
+.sd{width:32px;height:32px;border-radius:50%;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border2);background:var(--bg2);color:var(--txt3);transition:all .25s;z-index:1}
+.sd.active{background:var(--gold);border-color:var(--gold);color:var(--bg0)}
+.sd.done{background:var(--green);border-color:var(--green);color:#fff}
+.sl{flex:1;max-width:60px;height:1.5px;background:var(--border2);transition:background .25s}
+.sl.done{background:var(--green)}
+.fc{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:32px 28px}
+.fs{display:none}.fs.active{display:block}
+.fs-title{font-size:16px;font-weight:700;color:var(--txt);margin-bottom:3px}
+.fs-sub{font-size:12px;color:var(--txt3);margin-bottom:24px}
+.fg{margin-bottom:16px}
+.fl{display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:6px}
+.fr-req{color:var(--gold)}
+.fi,.fsel,.fta{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:var(--r);font-family:'Inter',sans-serif;font-size:14px;color:var(--txt);background:var(--bg3);outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,200,66,.1)}
+.fi.err{border-color:var(--red)}
+.fi::placeholder,.fta::placeholder{color:var(--txt3)}
+.fta{resize:none;height:88px}
+.fsel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235A5A72' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+.fsel option{background:var(--bg3);color:var(--txt)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ferr{display:none;font-size:11px;color:var(--red);margin-top:5px}
+.ferr.show{display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 16px;border:1px solid var(--border2);border-radius:100px;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:var(--txt2);cursor:pointer;transition:all .18s;background:var(--bg3);user-select:none}
+.chip:hover{border-color:var(--gold-brd);color:var(--txt)}
+.chip.sel{border-color:var(--gold);background:var(--gold-dim);color:var(--txt);font-weight:600}
+.fnav{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
+.bback{padding:11px 20px;border:1px solid var(--border2);border-radius:var(--r);background:transparent;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--txt3);cursor:pointer;transition:all .18s}
+.bback:hover{color:var(--txt);background:var(--bg3)}
+.bnext{padding:11px 24px;border:none;border-radius:var(--r);background:var(--gold);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:var(--bg0);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.bnext:hover{background:var(--gold2);transform:translateY(-1px)}
+.bnext:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.fsuc{display:none;text-align:center;padding:12px 0}
+.suc-ico{width:76px;height:76px;border-radius:20px;background:var(--gold-dim);border:1px solid var(--gold-brd);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 20px}
+.suc-title{font-size:24px;font-weight:800;color:var(--txt);letter-spacing:-.5px;margin-bottom:10px}
+.suc-title em{color:var(--gold);font-style:normal}
+.suc-txt{font-size:14px;color:var(--txt2);line-height:1.7;margin-bottom:24px}
+.suc-box{background:var(--gold-dim);border:1px solid var(--gold-brd);border-radius:var(--r2);padding:16px 20px;font-size:13px;color:var(--txt2);line-height:1.8;text-align:left;margin-bottom:28px}
+.suc-box strong{color:var(--gold);display:block;margin-bottom:4px}
+.bsec{border:1px solid var(--border2);background:var(--bg4);color:var(--txt);padding:12px 24px;border-radius:var(--r);font-family:'Inter',sans-serif;font-weight:600;font-size:13px;cursor:pointer}
+.trust{display:flex;justify-content:center;gap:24px;margin-top:28px;flex-wrap:wrap}
+.trust-i{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--txt3)}
+.spin-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.spin-ov.show{display:flex}
+.spinner{width:44px;height:44px;border:3px solid rgba(245,200,66,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin-txt{font-size:14px;font-weight:600;color:var(--txt)}
+.crm-btn{position:fixed;bottom:18px;right:18px;z-index:50;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:13px;color:rgba(255,255,255,.12);user-select:none}
+.crm-btn:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.35);border-color:rgba(255,255,255,.1)}
+
+/* ═══ LOGIN ═══ */
+.li-ov{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:400;display:none;align-items:center;justify-content:center;padding:20px}
+.li-ov.open{display:flex}
+.li-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:36px 32px;width:100%;max-width:380px;box-shadow:0 24px 64px rgba(0,0,0,.6)}
+.li-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
+.li-logo-ico{width:40px;height:40px;border-radius:11px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:20px}
+.li-logo-txt{font-size:14px;font-weight:800;color:var(--txt);line-height:1.2}
+.li-logo-txt small{font-size:10px;font-weight:400;color:var(--txt3);display:block}
+.li-title{font-size:20px;font-weight:800;color:var(--txt);text-align:center;margin-bottom:6px;letter-spacing:-.3px}
+.li-sub{font-size:13px;color:var(--txt3);text-align:center;margin-bottom:26px}
+.li-lbl{display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:6px}
+.li-inp{width:100%;padding:12px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--txt);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color .2s;margin-bottom:14px}
+.li-inp:focus{border-color:var(--gold)}
+.li-inp::placeholder{color:var(--txt3)}
+.li-btn{width:100%;padding:13px;border:none;border-radius:var(--r);background:var(--gold);color:var(--bg0);font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s}
+.li-btn:hover{background:var(--gold2)}
+.li-err{font-size:12px;color:#F87171;text-align:center;margin-top:10px;display:none}
+.li-err.show{display:block}
+.li-cancel{display:block;text-align:center;margin-top:14px;font-size:12px;color:var(--txt3);cursor:pointer;transition:color .2s}
+.li-cancel:hover{color:var(--txt)}
+
+/* ═══ CRM ═══ */
+#crm-screen{display:none;flex-direction:column;min-height:100vh}
+#crm-screen.on{display:flex}
+.tb{height:54px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:10px;position:sticky;top:0;z-index:100;flex-shrink:0}
+.tb-logo{display:flex;align-items:center;gap:9px;min-width:var(--sb);padding-right:12px}
+.tl-ico{width:30px;height:30px;border-radius:8px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.tl-txt{font-size:13px;font-weight:700;color:var(--txt);line-height:1.2}
+.tl-txt small{font-size:10px;font-weight:400;color:var(--txt3);display:block}
+.tb-sep{width:1px;height:24px;background:var(--border2);flex-shrink:0}
+.sw{flex:1;max-width:300px;position:relative}
+.sw input{width:100%;padding:7px 12px 7px 34px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);color:var(--txt);font-family:'Inter',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.sw input:focus{border-color:var(--gold)}
+.sw input::placeholder{color:var(--txt3)}
+.si{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--txt3);font-size:14px;pointer-events:none}
+.tb-r{display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:nowrap}
+.tstat .num{font-size:17px;font-weight:800;color:var(--gold);line-height:1}
+.tstat .lbl{font-size:9px;color:var(--txt3);margin-top:1px;text-align:right}
+.tbtn{padding:6px 12px;border:1px solid var(--border2);border-radius:var(--r);background:var(--bg3);color:var(--txt2);font-family:'Inter',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap}
+.tbtn:hover{border-color:var(--border3);color:var(--txt);background:var(--bg4)}
+.tbtn.gold{background:var(--gold);color:var(--bg0);border-color:var(--gold)}
+.tbtn.gold:hover{background:var(--gold2)}
+.sbtn{padding:6px 10px;border:1px solid;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .18s}
+.sbtn.on{border-color:var(--gb);color:var(--green);background:var(--gd)}
+.sbtn.off{border-color:var(--rb);color:#F87171;background:var(--rd)}
+.sync-w{display:flex;align-items:center;gap:5px}
+.sync-d{width:7px;height:7px;border-radius:50%;transition:background .3s}
+.sync-d.ok{background:var(--green)}
+.sync-d.busy{background:var(--gold);animation:sp .7s infinite alternate}
+.sync-d.err{background:var(--red)}
+@keyframes sp{from{opacity:.3}to{opacity:1}}
+.sync-l{font-size:10px;color:var(--txt3);white-space:nowrap}
+.uch{display:flex;align-items:center;gap:6px;padding:5px 10px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);font-size:11px;font-weight:600;color:var(--txt2);cursor:pointer;transition:all .18s}
+.uch:hover{background:var(--bg4);color:var(--txt)}
+.layout{display:flex;flex:1;overflow:hidden;height:calc(100vh - 54px)}
+.sidebar{width:var(--sb);background:var(--bg1);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;padding:12px 0}
+.sb-sec{padding:0 10px;margin-bottom:4px}
+.sbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt3);padding:0 8px;margin-bottom:5px;margin-top:12px}
+.sbi{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:var(--r2);cursor:pointer;transition:all .15s;font-size:13px;color:var(--txt2);font-weight:500;user-select:none}
+.sbi:hover{background:var(--bg3);color:var(--txt)}
+.sbi.active{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-brd)}
+.sbi .ico{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sbi .cnt{margin-left:auto;font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;background:var(--bg4);color:var(--txt3)}
+.sbi.active .cnt{background:var(--gold-dim);color:var(--gold)}
+.main{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+.view{display:none;flex-direction:column;gap:16px;flex:1}
+.view.active{display:flex}
+
+/* Kanban */
+.kanban{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;align-items:flex-start}
+.kanban::-webkit-scrollbar{height:4px}
+.kanban::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+.col{min-width:230px;width:230px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);display:flex;flex-direction:column;flex-shrink:0;max-height:calc(100vh - 130px)}
+.col-h{padding:11px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;flex-shrink:0}
+.cdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ctitle{font-size:11px;font-weight:700;color:var(--txt);text-transform:uppercase;letter-spacing:.05em;flex:1}
+.ccount{font-size:11px;font-weight:600;padding:2px 7px;border-radius:100px;background:var(--bg4);color:var(--txt3)}
+.col-b{overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:7px;flex:1}
+.lcard{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:11px 13px;cursor:pointer;transition:all .18s;position:relative}
+.lcard:hover{border-color:var(--border3);background:var(--bg4);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.lcard.new-pulse{animation:np 1.2s ease 4;border-color:var(--gold-brd)!important}
+@keyframes np{0%,100%{box-shadow:none}50%{box-shadow:0 0 0 3px rgba(245,200,66,.35)}}
+.lc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:7px}
+.lc-n{font-size:13px;font-weight:700;color:var(--txt);line-height:1.3}
+.lsc{font-size:10px;font-weight:600;padding:2px 7px;border-radius:100px}
+.lsc.quente{background:var(--rd);color:#F87171;border:1px solid var(--rb)}
+.lsc.morno{background:var(--od);color:#FB923C;border:1px solid var(--ob)}
+.lsc.frio{background:var(--bd);color:#60A5FA;border:1px solid var(--bb)}
+.lc-info{display:flex;flex-direction:column;gap:3px;margin-bottom:7px}
+.lc-row{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--txt3)}
+.lc-tags{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:7px}
+.ltag{font-size:10px;padding:2px 7px;border-radius:100px;background:var(--bg5);color:var(--txt3);border:1px solid var(--border2)}
+.lc-ft{display:flex;align-items:center;justify-content:space-between}
+.lc-dt{font-size:10px;color:var(--txt3)}
+.lc-ac{font-size:10px;color:var(--txt2)}
+.nbadge{position:absolute;top:-7px;right:8px;background:var(--gold);color:var(--bg0);font-size:9px;font-weight:800;padding:2px 7px;border-radius:100px}
+
+/* Tabela */
+.twrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden}
+.thead{display:flex;align-items:center;padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border);gap:12px}
+.thead h3{font-size:14px;font-weight:700;color:var(--txt)}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:9px 13px;text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);border-bottom:1px solid var(--border);white-space:nowrap}
+.tbl td{padding:9px 13px;font-size:12px;color:var(--txt2);border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:var(--bg3);cursor:pointer}
+.tbl .nc{font-weight:600;color:var(--txt)}
+.pill{display:inline-flex;font-size:10px;font-weight:600;padding:3px 8px;border-radius:100px;white-space:nowrap}
+.pill.novo{background:var(--bd);color:#60A5FA;border:1px solid var(--bb)}
+.pill.contatado{background:var(--od);color:#FB923C;border:1px solid var(--ob)}
+.pill.interessado{background:var(--pd);color:#C084FC;border:1px solid var(--pb)}
+.pill.matriculado{background:var(--gd);color:#4ADE80;border:1px solid var(--gb)}
+.pill.perdido{background:var(--rd);color:#F87171;border:1px solid var(--rb)}
+.pill.agendado{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-brd)}
+
+/* Dashboard */
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.scard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);padding:15px 18px}
+.scard .sn{font-size:26px;font-weight:800;letter-spacing:-1px;line-height:1;margin-bottom:4px}
+.scard .sl{font-size:11px;color:var(--txt3);font-weight:500}
+.scard .ss{font-size:10px;color:var(--txt3);margin-top:2px}
+
+/* Config */
+.cfg-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);padding:26px}
+.cfg-title{font-size:18px;font-weight:800;color:var(--txt);letter-spacing:-.3px;margin-bottom:6px}
+.cfg-title em{color:var(--gold);font-style:normal}
+.cfg-sub{font-size:13px;color:var(--txt3);line-height:1.65;margin-bottom:20px}
+.cfg-step{display:flex;gap:14px;margin-bottom:14px;padding:15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2)}
+.cfg-n{width:26px;height:26px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-brd);color:var(--gold);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.cfg-st{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px}
+.cfg-sd{font-size:12px;color:var(--txt2);line-height:1.6}
+.cfg-sd a{color:var(--gold);text-decoration:none}
+.cfg-inp{width:100%;padding:10px 13px;background:var(--bg4);border:1px solid var(--border2);border-radius:var(--r);color:var(--txt);font-family:'Inter',sans-serif;font-size:13px;outline:none;transition:border-color .2s;margin-top:8px}
+.cfg-inp:focus{border-color:var(--gold)}
+.cfg-inp::placeholder{color:var(--txt3)}
+.cfg-sbtn{padding:11px 22px;border:none;border-radius:var(--r);background:var(--gold);color:var(--bg0);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:10px}
+.cfg-sbtn:hover{background:var(--gold2)}
+.cfg-msg{font-size:12px;margin-top:10px;padding:10px 14px;border-radius:var(--r);display:none}
+.cfg-msg.ok{background:var(--gd);border:1px solid var(--gb);color:#4ADE80;display:block}
+.cfg-msg.err{background:var(--rd);border:1px solid var(--rb);color:#F87171;display:block}
+.cfg-code{background:var(--bg0);border:1px solid var(--border2);border-radius:var(--r);padding:10px 14px;font-family:monospace;font-size:11px;color:var(--gold);word-break:break-all;margin-top:8px;line-height:1.6}
+
+/* Playbook */
+.ph{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);padding:22px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:20px}
+.ph-b{display:inline-flex;align-items:center;gap:6px;background:var(--gold-dim);border:1px solid var(--gold-brd);color:var(--gold);font-size:10px;font-weight:700;padding:4px 12px;border-radius:100px;margin-bottom:10px;letter-spacing:.05em;text-transform:uppercase}
+.ph-t{font-size:19px;font-weight:800;color:var(--txt);letter-spacing:-.5px;line-height:1.2;margin-bottom:7px}
+.ph-t em{color:var(--gold);font-style:normal}
+.ph-s{font-size:13px;color:var(--txt3);line-height:1.65;max-width:480px}
+.ph-kpis{display:flex;flex-direction:column;gap:7px;flex-shrink:0}
+.ph-k{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:9px 13px;text-align:center;min-width:82px}
+.ph-k .kn{font-size:16px;font-weight:800;color:var(--gold);line-height:1}
+.ph-k .kl{font-size:10px;color:var(--txt3);margin-top:2px}
+.pc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden}
+.pc-h{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px}
+.pi{width:32px;height:32px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.pc-t{font-size:14px;font-weight:700;color:var(--txt)}
+.pc-s{font-size:11px;color:var(--txt3);margin-top:1px}
+.pc-b{padding:18px}
+.dz-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.dz-i{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:13px 15px;display:flex;gap:10px;align-items:flex-start}
+.dz-ico{width:30px;height:30px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:1px}
+.dz-t{font-size:12px;font-weight:700;color:var(--txt);margin-bottom:3px}
+.dz-d{font-size:12px;color:var(--txt2);line-height:1.6}
+.el{display:flex;flex-direction:column}
+.ei{display:flex;gap:0}
+.enc{display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0;padding-top:4px}
+.ecirc{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;border:2px solid;flex-shrink:0}
+.eline{width:2px;flex:1;min-height:18px;margin:3px 0}
+.ei:last-child .eline{display:none}
+.econt{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:14px 16px;margin-bottom:9px}
+.etag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:100px;border:1px solid;display:inline-flex;margin-bottom:6px}
+.et{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:3px}
+.eo{font-size:12px;color:var(--txt3);margin-bottom:10px;line-height:1.5}
+.esub{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:5px}
+.erows{display:flex;flex-direction:column;gap:4px}
+.er{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--txt2);line-height:1.55}
+.er::before{content:'→';color:var(--gold);font-weight:700;flex-shrink:0;margin-top:1px}
+.ecols{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:9px}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.ri{display:flex;align-items:flex-start;gap:9px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:12px 14px}
+.rnum{width:22px;height:22px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-brd);color:var(--gold);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.rtxt{font-size:12px;color:var(--txt2);line-height:1.6}
+.rtxt strong{color:var(--txt);font-weight:600}
+
+/* Follow-up */
+.fu-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:2px}
+.funb{padding:6px 13px;border:1px solid var(--border2);border-radius:100px;background:var(--bg2);color:var(--txt3);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.funb:hover{border-color:var(--border3);color:var(--txt)}
+.funb.active{background:var(--gold-dim);border-color:var(--gold-brd);color:var(--gold)}
+.fup{display:none}
+.fup.active{display:flex;flex-direction:column;gap:14px}
+.fuph{border-radius:var(--r2);padding:16px 18px;display:flex;align-items:flex-start;gap:13px}
+.fupi{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.fupt{font-size:14px;font-weight:800;color:var(--txt);margin-bottom:3px}
+.fups{font-size:12px;line-height:1.65}
+.fupw{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:4px 11px;border-radius:100px;border:1px solid;margin-top:7px}
+.fuc{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.fub{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:14px 16px}
+.fubt{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.full{display:flex;flex-direction:column;gap:7px}
+.fuli{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--txt2);line-height:1.6}
+.fuli .d{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.ma{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden}
+.mah{padding:11px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.maht{font-size:12px;font-weight:700;color:var(--txt)}
+.mtabs{display:flex;gap:4px}
+.mtab{padding:5px 11px;border:1px solid var(--border2);border-radius:var(--r);background:transparent;color:var(--txt3);font-family:'Inter',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+.mtab:hover{background:var(--bg3);color:var(--txt)}
+.mtab.active{background:var(--gold-dim);border-color:var(--gold-brd);color:var(--gold)}
+.mab{padding:14px 16px}
+.mctx{font-size:11px;color:var(--txt3);line-height:1.6;margin-bottom:11px;padding:9px 12px;background:var(--bg3);border-radius:var(--r);border-left:3px solid var(--gold)}
+.mbub{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r2);padding:13px 15px;font-size:13px;color:var(--txt2);line-height:1.8;white-space:pre-wrap;font-family:'Inter',sans-serif}
+.mbub .var{color:var(--gold);font-weight:600}
+.mbub strong{color:var(--txt)}
+.mcr{display:flex;gap:6px;margin-top:9px}
+.cpb{padding:5px 13px;border:1px solid var(--border2);border-radius:var(--r);background:var(--bg4);color:var(--txt3);font-family:'Inter',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+.cpb:hover{border-color:var(--gold-brd);color:var(--gold);background:var(--gold-dim)}
+.cpb.ok{border-color:var(--gb);color:var(--green);background:var(--gd)}
+
+/* Modais */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(3px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.ov.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r4);width:100%;max-width:600px;margin:auto;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.6)}
+.mh{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:13px}
+.mav{width:44px;height:44px;border-radius:12px;background:var(--gold-dim);border:1px solid var(--gold-brd);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.mi{flex:1}
+.mn{font-size:17px;font-weight:800;color:var(--txt);letter-spacing:-.3px;margin-bottom:3px}
+.msub{font-size:12px;color:var(--txt3);display:flex;flex-wrap:wrap;gap:8px}
+.mcl{width:30px;height:30px;border-radius:var(--r);background:var(--bg4);border:1px solid var(--border2);color:var(--txt3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:all .15s}
+.mcl:hover{background:var(--bg5);color:var(--txt)}
+.mbody{padding:18px 22px;display:flex;flex-direction:column;gap:16px}
+.msec{display:flex;flex-direction:column;gap:7px}
+.msect{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);padding-bottom:5px;border-bottom:1px solid var(--border)}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.mf{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);padding:9px 13px}
+.mfl{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:3px}
+.mfv{font-size:13px;color:var(--txt);font-weight:500}
+.mfv.empty{color:var(--txt3);font-style:italic;font-weight:400}
+.msel{width:100%;padding:9px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--txt);font-family:'Inter',sans-serif;font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235A5A72' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:30px}
+.msel:focus{border-color:var(--gold)}
+.msel option{background:var(--bg3)}
+.mta{width:100%;padding:9px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--txt);font-family:'Inter',sans-serif;font-size:13px;outline:none;resize:none;height:72px}
+.mta:focus{border-color:var(--gold)}
+.mta::placeholder{color:var(--txt3)}
+.nlst{display:flex;flex-direction:column;gap:7px;max-height:160px;overflow-y:auto}
+.nitem{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:9px 11px}
+.nitem-t{font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:3px}
+.nitem-m{font-size:10px;color:var(--txt3)}
+.mfoot{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.btn{padding:8px 16px;border-radius:var(--r);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;border:none;display:flex;align-items:center;gap:5px}
+.btn-g{background:transparent;border:1px solid var(--border2);color:var(--txt3)}
+.btn-g:hover{background:var(--bg3);color:var(--txt)}
+.btn-d{background:var(--rd);border:1px solid var(--rb);color:#F87171}
+.btn-d:hover{background:rgba(239,68,68,.2)}
+.btn-p{background:var(--gold);color:var(--bg0)}
+.btn-p:hover{background:var(--gold2)}
+.btn-grn{background:var(--gd);border:1px solid var(--gb);color:#4ADE80}
+.btn-grn:hover{background:rgba(34,197,94,.2)}
+.nli{width:100%;padding:10px 13px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--txt);font-family:'Inter',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.nli:focus{border-color:var(--gold)}
+.nli::placeholder{color:var(--txt3)}
+
+/* Users */
+.uw{display:flex;flex-direction:column;gap:14px}
+.u-hdr{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r3);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.u-t{font-size:17px;font-weight:800;color:var(--txt);letter-spacing:-.3px;margin-bottom:3px}
+.u-t em{color:var(--gold);font-style:normal}
+.u-s{font-size:12px;color:var(--txt3);line-height:1.5}
+.u-lim{font-size:12px;font-weight:700;padding:5px 13px;border-radius:100px;background:var(--gold-dim);border:1px solid var(--gold-brd);color:var(--gold);white-space:nowrap}
+.u-row{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:13px 17px;display:flex;align-items:center;gap:13px}
+.u-av{width:36px;height:36px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--gold-brd);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--gold);flex-shrink:0}
+.u-i{flex:1}
+.u-nm{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:2px}
+.u-lg{font-size:11px;color:var(--txt3);font-family:monospace}
+.u-role{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;border:1px solid}
+.u-role.admin{background:var(--gold-dim);border-color:var(--gold-brd);color:var(--gold)}
+.u-role.user{background:var(--bd);border-color:var(--bb);color:#60A5FA}
+.u-del{padding:5px 11px;border:1px solid var(--rb);border-radius:var(--r);background:var(--rd);color:#F87171;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .18s}
+.u-del:hover{background:rgba(239,68,68,.25)}
+.nu-card{background:var(--bg2);border:1.5px dashed var(--border2);border-radius:var(--r3);padding:20px 24px}
+.nu-t{font-size:14px;font-weight:700;color:var(--txt);margin-bottom:14px}
+.nu-g{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.nu-l{display:block;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--txt3);margin-bottom:5px}
+.nu-in{width:100%;padding:10px 13px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--txt);font-family:'Inter',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.nu-in:focus{border-color:var(--gold)}
+.nu-in::placeholder{color:var(--txt3)}
+.nu-sel{width:100%;padding:10px 13px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);color:var(--txt);font-family:'Inter',sans-serif;font-size:13px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235A5A72' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:32px}
+.nu-sel option{background:var(--bg3)}
+
+/* Notificação */
+.notif{position:fixed;top:64px;right:18px;z-index:500;background:var(--bg2);border:1.5px solid var(--gold-brd);border-radius:var(--r3);padding:14px 16px;min-width:260px;max-width:310px;box-shadow:0 10px 36px rgba(0,0,0,.55);transform:translateX(120%);opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+.notif.show{transform:translateX(0);opacity:1;pointer-events:auto}
+.n-h{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.n-d{width:9px;height:9px;border-radius:50%;background:var(--gold);animation:bl 1s infinite}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
+.n-tl{font-size:12px;font-weight:700;color:var(--gold);flex:1}
+.n-cl{background:none;border:none;color:var(--txt3);cursor:pointer;font-size:15px;line-height:1;padding:0 3px}
+.n-nome{font-size:14px;font-weight:800;color:var(--txt);margin-bottom:2px}
+.n-meta{font-size:11px;color:var(--txt3)}
+
+/* Celebração */
+.cel-ov{position:fixed;inset:0;z-index:999;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.cel-ov.show{opacity:1}
+.cel-box{background:var(--bg1);border:2px solid var(--gold-brd);border-radius:22px;padding:36px 44px;text-align:center;box-shadow:0 28px 70px rgba(0,0,0,.7);transform:scale(.8);transition:transform .4s cubic-bezier(.34,1.56,.64,1);pointer-events:auto;position:relative;overflow:hidden;max-width:360px;width:90%}
+.cel-ov.show .cel-box{transform:scale(1)}
+.c-glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(245,200,66,.18),transparent 70%);pointer-events:none}
+.c-emoji{font-size:50px;display:block;margin-bottom:14px;animation:bnc .6s ease infinite alternate}
+@keyframes bnc{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+.c-title{font-size:22px;font-weight:800;color:var(--txt);letter-spacing:-.5px;margin-bottom:7px}
+.c-title em{color:var(--gold);font-style:normal}
+.c-nome{font-size:17px;font-weight:700;color:var(--gold);margin-bottom:5px}
+.c-sub{font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:22px}
+.c-btn{padding:11px 26px;border:none;border-radius:var(--r2);background:var(--gold);color:var(--bg0);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+.c-btn:hover{background:var(--gold2)}
+.c-fw{position:fixed;inset:0;pointer-events:none;z-index:998;overflow:hidden}
+.conf{position:absolute;width:8px;height:8px;border-radius:2px;opacity:0;animation:cf linear forwards}
+@keyframes cf{0%{opacity:1;transform:translateY(-20px) rotate(0)}100%{opacity:0;transform:translateY(105vh) rotate(720deg)}}
+
+/* Toast */
+.toast{position:fixed;bottom:22px;right:22px;z-index:500;background:var(--bg4);border:1px solid var(--border3);border-radius:var(--r2);padding:11px 17px;font-size:13px;color:var(--txt);box-shadow:0 8px 24px rgba(0,0,0,.4);transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{border-color:var(--gb);color:var(--green)}
+.toast.err{border-color:var(--rb);color:#F87171}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+@media(max-width:900px){:root{--sb:0px}.sidebar{display:none}.main{padding:12px}.dz-grid,.rg,.fuc,.mgrid,.ecols,.nu-g{grid-template-columns:1fr}}
+@media(max-width:400px){.fc{padding:24px 18px}.fgrid{grid-template-columns:1fr}.trust{gap:14px}}
+</style>
+</head>
+<body>
+
+<!-- SPINNER -->
+<div class="spin-ov" id="spin-ov">
+  <div class="spinner"></div>
+  <div class="spin-txt" id="spin-txt">Aguarde...</div>
+</div>
+
+<!-- ═══ FORMULÁRIO ═══ -->
+<div id="form-screen">
+<div class="fp">
+  <div class="hero">
+    <div class="logo"><div class="logo-ico">💻</div><div class="logo-txt">Bolsão Informática 2.0<span>Escola de Tecnologia</span></div></div>
+    <div class="badge">✦ Consulta gratuita · Sem compromisso</div>
+    <h1>Qual o melhor caminho<br>para a <em>sua evolução</em>?</h1>
+    <p>Preencha o formulário e nossa equipe entra em contato para te orientar sem pressa e do jeito certo.</p>
+  </div>
+  <div class="steps" id="fsteps">
+    <div class="sd active" id="sd1">1</div><div class="sl" id="sl1"></div>
+    <div class="sd" id="sd2">2</div><div class="sl" id="sl2"></div>
+    <div class="sd" id="sd3">3</div>
+  </div>
+  <div class="fc">
+    <div class="fs active" id="fs1">
+      <div class="fs-title">Prazer em te conhecer! 👋</div>
+      <div class="fs-sub">Nos conte um pouco sobre você</div>
+      <div class="fg"><label class="fl">Nome completo <span class="fr-req">*</span></label><input type="text" id="f-nome" class="fi" placeholder="Ex: Maria da Silva" autocomplete="name"><div class="ferr" id="fe-nome">⚠ Informe seu nome completo</div></div>
+      <div class="fgrid">
+        <div class="fg"><label class="fl">WhatsApp <span class="fr-req">*</span></label><input type="tel" id="f-wpp" class="fi" placeholder="(18) 99999-9999" maxlength="15"><div class="ferr" id="fe-wpp">⚠ Informe com DDD</div></div>
+        <div class="fg"><label class="fl">E-mail</label><input type="email" id="f-email" class="fi" placeholder="seu@email.com"><div class="ferr" id="fe-email">⚠ E-mail inválido</div></div>
+      </div>
+      <div class="fgrid">
+        <div class="fg"><label class="fl">Sua idade</label><input type="number" id="f-idade" class="fi" placeholder="Ex: 28" min="8" max="90"></div>
+        <div class="fg"><label class="fl">Matrícula para</label><select id="f-para" class="fsel"><option value="">Selecione</option><option value="mim">Para mim</option><option value="filho">Para meu filho(a)</option><option value="ambos">Para mim e filho(a)</option></select></div>
+      </div>
+      <div class="fnav"><button class="bnext" onclick="fGo(2)">Próximo →</button></div>
+    </div>
+    <div class="fs" id="fs2">
+      <div class="fs-title">O que você está buscando? 🎯</div>
+      <div class="fs-sub">Isso nos ajuda a montar o plano certo para você</div>
+      <div class="fg"><label class="fl">Principal objetivo <span class="fr-req">*</span></label><div class="chips" id="chips-obj"><div class="chip" onclick="selC(this,'obj')">💼 Conseguir emprego</div><div class="chip" onclick="selC(this,'obj')">📈 Crescer no trabalho</div><div class="chip" onclick="selC(this,'obj')">🏪 Abrir meu negócio</div><div class="chip" onclick="selC(this,'obj')">🏠 Uso pessoal / família</div><div class="chip" onclick="selC(this,'obj')">🎓 Estudos / faculdade</div><div class="chip" onclick="selC(this,'obj')">👦 Para meu filho(a)</div></div><div class="ferr" id="fe-obj">⚠ Selecione seu objetivo</div></div>
+      <div class="fg"><label class="fl">Nível atual <span class="fr-req">*</span></label><div class="chips" id="chips-nivel"><div class="chip" onclick="selC(this,'nivel')">🐣 Zero — nunca usei</div><div class="chip" onclick="selC(this,'nivel')">🌱 Básico — uso pouco</div><div class="chip" onclick="selC(this,'nivel')">🌿 Intermediário</div></div><div class="ferr" id="fe-nivel">⚠ Selecione seu nível</div></div>
+      <div class="fg"><label class="fl">Quando quer começar?</label><div class="chips" id="chips-inicio"><div class="chip" onclick="selC(this,'inicio')">🔥 O quanto antes</div><div class="chip" onclick="selC(this,'inicio')">📅 Próximo mês</div><div class="chip" onclick="selC(this,'inicio')">🗓️ Em 3 meses</div><div class="chip" onclick="selC(this,'inicio')">🤔 Ainda decidindo</div></div></div>
+      <div class="fg"><label class="fl">Período preferido</label><div class="chips" id="chips-periodo"><div class="chip" onclick="selC(this,'periodo')">🌅 Manhã</div><div class="chip" onclick="selC(this,'periodo')">☀️ Tarde</div><div class="chip" onclick="selC(this,'periodo')">🌙 Noite</div><div class="chip" onclick="selC(this,'periodo')">📅 Sábado</div></div></div>
+      <div class="fnav"><button class="bback" onclick="fGo(1)">← Voltar</button><button class="bnext" onclick="fGo(3)">Próximo →</button></div>
+    </div>
+    <div class="fs" id="fs3">
+      <div class="fs-title">Quase lá! ✨</div>
+      <div class="fs-sub">Mais um detalhe para te ajudar melhor</div>
+      <div class="fg"><label class="fl">O que te motivou agora? <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:10px;color:var(--txt3)">(opcional)</span></label><textarea id="f-mot" class="fta" placeholder="Ex: perdi meu emprego, quero me recolocar..."></textarea></div>
+      <div class="fg"><label class="fl">Como ficou sabendo da Bolsão?</label><select id="f-orig" class="fsel"><option value="">Selecione</option><option>Instagram</option><option>Facebook</option><option>Indicação de amigo/familiar</option><option>Google</option><option>Escola / colégio</option><option>Anúncio / ADS</option><option>Passei na frente da escola</option><option>Panfleto</option><option>Outro</option></select></div>
+      <div class="fnav"><button class="bback" onclick="fGo(2)">← Voltar</button><button class="bnext" id="fsub" onclick="fSubmit()">✓ Quero dar o próximo passo</button></div>
+    </div>
+    <div class="fsuc" id="fsuc">
+      <div class="suc-ico">🎉</div>
+      <div class="suc-title">Recebemos tudo,<br><em id="fsuc-nome"></em>!</div>
+      <p class="suc-txt">Suas informações já chegaram pra gente. Em breve nossa equipe vai entrar em contato pelo WhatsApp!</p>
+      <div class="suc-box"><strong>O que acontece agora:</strong>Nossa equipe vai entrar em contato em até 10 minutinhos. Fique de olho! 📱</div>
+      <button class="bsec" onclick="fReset()">Fazer outro cadastro</button>
+    </div>
+  </div>
+  <div class="trust"><div class="trust-i">🔒 Dados 100% seguros</div><div class="trust-i">⚡ Retorno em até 10 min</div><div class="trust-i">✅ Sem cobranças</div></div>
+</div>
+<div class="crm-btn" onclick="openLogin()" title="">⚙</div>
+</div>
+
+<!-- ═══ LOGIN ═══ -->
+<div class="li-ov" id="li-ov">
+  <div class="li-box">
+    <div class="li-logo"><div class="li-logo-ico">💻</div><div class="li-logo-txt">Bolsão CRM<small>Acesso Administrativo</small></div></div>
+    <div class="li-title">Área restrita</div>
+    <div class="li-sub">Somente administradores autorizados</div>
+    <label class="li-lbl">Usuário</label>
+    <input type="text" id="li-u" class="li-inp" placeholder="seu.usuario" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
+    <label class="li-lbl">Senha</label>
+    <input type="password" id="li-p" class="li-inp" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="li-btn" onclick="doLogin()">Entrar no CRM →</button>
+    <div class="li-err" id="li-err">Usuário ou senha incorretos</div>
+    <span class="li-cancel" onclick="closeLogin()">Cancelar</span>
+  </div>
+</div>
+
+<!-- ═══ CRM ═══ -->
+<div id="crm-screen">
+<div class="tb">
+  <div class="tb-logo"><div class="tl-ico">💻</div><div class="tl-txt">Bolsão CRM<small>Informática 2.0</small></div></div>
+  <div class="tb-sep"></div>
+  <div class="sw"><span class="si">🔍</span><input type="text" id="srch" placeholder="Buscar..." oninput="onSearch()"></div>
+  <div class="tb-r">
+    <div class="tstat"><div class="num" id="stat-tot">0</div><div class="lbl">Leads</div></div>
+    <div class="sync-w"><div class="sync-d ok" id="sdot"></div><span class="sync-l" id="slbl">—</span></div>
+    <button class="sbtn on" id="sndbtn" onclick="toggleSnd()">🔔 Som</button>
+    <button class="tbtn" onclick="exportCSV()">⬇ CSV</button>
+    <button class="tbtn" onclick="setV('config')">⚙ Config</button>
+    <button class="tbtn gold" onclick="openNL()">+ Lead</button>
+    <div class="uch" onclick="setV('users')">👤 <span id="uchname">—</span></div>
+  </div>
+</div>
+<div class="layout">
+<div class="sidebar">
+  <div class="sb-sec">
+    <div class="sbl">CRM</div>
+    <div class="sbi active" id="nav-kanban" onclick="setV('kanban')"><span class="ico">📋</span>Kanban</div>
+    <div class="sbi" id="nav-lista"  onclick="setV('lista')"><span class="ico">📄</span>Lista</div>
+    <div class="sbi" id="nav-dash"   onclick="setV('dash')"><span class="ico">📊</span>Dashboard</div>
+  </div>
+  <div class="sb-sec">
+    <div class="sbl">Guia Comercial</div>
+    <div class="sbi" id="nav-playbook"  onclick="setV('playbook')"><span class="ico">📖</span>Playbook</div>
+    <div class="sbi" id="nav-followup"  onclick="setV('followup')"><span class="ico">⏰</span>Follow-up</div>
+  </div>
+  <div class="sb-sec">
+    <div class="sbl">Filtrar etapa</div>
+    <div class="sbi" id="nav-all"         onclick="fltE('')"><span class="ico">🌐</span>Todos<span class="cnt" id="cnt-all">0</span></div>
+    <div class="sbi" id="nav-novo"         onclick="fltE('Novo Lead')"><span class="ico">🔵</span>Novos<span class="cnt" id="cnt-novo">0</span></div>
+    <div class="sbi" id="nav-contatado"    onclick="fltE('Contatado')"><span class="ico">🟠</span>Contatados<span class="cnt" id="cnt-contatado">0</span></div>
+    <div class="sbi" id="nav-interessado"  onclick="fltE('Interessado')"><span class="ico">🟣</span>Interessados<span class="cnt" id="cnt-interessado">0</span></div>
+    <div class="sbi" id="nav-agendado"     onclick="fltE('Agendado')"><span class="ico">🟡</span>Agendados<span class="cnt" id="cnt-agendado">0</span></div>
+    <div class="sbi" id="nav-matriculado"  onclick="fltE('Matriculado')"><span class="ico">🟢</span>Matriculados<span class="cnt" id="cnt-matriculado">0</span></div>
+    <div class="sbi" id="nav-perdido"      onclick="fltE('Perdido')"><span class="ico">🔴</span>Perdidos<span class="cnt" id="cnt-perdido">0</span></div>
+  </div>
+  <div class="sb-sec">
+    <div class="sbl">Conta</div>
+    <div class="sbi" id="nav-users" onclick="setV('users')"><span class="ico">👥</span>Usuários</div>
+    <div class="sbi" onclick="loadSamples()"><span class="ico">🧪</span>Dados teste</div>
+    <div class="sbi" onclick="clearAll()"><span class="ico">🗑️</span>Limpar tudo</div>
+    <div class="sbi" onclick="doLogout()"><span class="ico">🚪</span>Sair</div>
+  </div>
+</div>
+<div class="main">
+  <div class="view active" id="view-kanban"><div class="kanban" id="kb"></div></div>
+  <div class="view" id="view-lista">
+    <div class="twrap"><div class="thead"><h3>Todos os Leads</h3><span style="margin-left:auto;font-size:11px;color:var(--txt3)" id="lcount"></span></div>
+    <div style="overflow-x:auto"><table class="tbl"><thead><tr><th>Nome</th><th>WhatsApp</th><th>Etapa</th><th>Score</th><th>Objetivo</th><th>Nível</th><th>Origem</th><th>Data</th></tr></thead><tbody id="ltb"></tbody></table></div></div>
+  </div>
+  <div class="view" id="view-dash"><div class="dgrid" id="dgrid"></div></div>
+  <div class="view" id="view-users"><div class="uw" id="uw"></div></div>
+  <div class="view" id="view-config">
+    <div class="cfg-wrap">
+      <div class="cfg-title">Configurar <em>Supabase</em></div>
+      <div class="cfg-sub">O Supabase é gratuito e sincroniza leads entre qualquer dispositivo em tempo real.</div>
+      <div class="cfg-step"><div class="cfg-n">1</div><div><div class="cfg-st">Criar tabela no Supabase</div><div class="cfg-sd">Acesse <a href="https://supabase.com" target="_blank">supabase.com</a> → crie seu projeto → <strong style="color:var(--txt)">SQL Editor</strong> → execute:</div>
+      <div class="cfg-code">create table leads (
+  id text primary key,
+  ts bigint, nome text, wpp text, email text,
+  idade text, para text, obj text, nivel text,
+  inicio text, periodo text, motivacao text,
+  origem text, score text,
+  etapa text default 'Novo Lead',
+  proxima_acao text default 'Primeiro contato',
+  notas jsonb default '[]',
+  data text, hora text, fonte text, escola text,
+  created_at timestamptz default now()
+);
+alter table leads enable row level security;
+create policy "acesso_publico" on leads
+  for all using (true) with check (true);</div></div></div>
+      <div class="cfg-step"><div class="cfg-n">2</div><div><div class="cfg-st">Copiar credenciais</div><div class="cfg-sd"><strong style="color:var(--txt)">Settings → API</strong> → copie a <strong style="color:var(--txt)">Project URL</strong> e a <strong style="color:var(--txt)">anon public key</strong>.</div></div></div>
+      <div class="cfg-step"><div class="cfg-n">3</div><div><div class="cfg-st">Cole abaixo e salve</div>
+        <input type="text" class="cfg-inp" id="cfg-url" placeholder="Project URL — ex: https://xxxx.supabase.co">
+        <input type="text" class="cfg-inp" id="cfg-key" placeholder="anon key — ex: eyJhbGci..." style="margin-top:8px">
+        <br><button class="cfg-sbtn" onclick="saveSupaCfg()">💾 Salvar e testar conexão</button>
+        <div class="cfg-msg" id="cfg-msg"></div>
+      </div></div>
+    </div>
+  </div>
+  <div class="view" id="view-playbook">
+    <div class="ph"><div><div class="ph-b">📖 Playbook</div><div class="ph-t">Como a <em>Bolsão</em> atende</div><div class="ph-s">Guia prático do time. Conduza qualquer lead com leveza e consistência.</div></div><div class="ph-kpis"><div class="ph-k"><div class="kn">≤10min</div><div class="kl">1º contato</div></div><div class="ph-k"><div class="kn">3</div><div class="kl">etapas</div></div></div></div>
+    <div class="pc"><div class="pc-h"><div class="pi" style="background:var(--gold-dim);color:var(--gold)">💬</div><div><div class="pc-t">Diretrizes gerais</div><div class="pc-s">Como se comunicar e criar conexão</div></div></div><div class="pc-b"><div class="dz-grid">
+      <div class="dz-i"><div class="dz-ico" style="background:var(--gold-dim)">😊</div><div><div class="dz-t">Tom leve e próximo</div><div class="dz-d">Fala como gente. Usa o nome, mostra interesse genuíno.</div></div></div>
+      <div class="dz-i"><div class="dz-ico" style="background:var(--bd)">🎯</div><div><div class="dz-t">Personalização sempre</div><div class="dz-d">Leu o formulário? Mencione. Ela percebe quando você se preparou.</div></div></div>
+      <div class="dz-i"><div class="dz-ico" style="background:var(--gd)">👂</div><div><div class="dz-t">Ouvir mais do que falar</div><div class="dz-d">Deixe a pessoa contar a história antes de apresentar qualquer coisa.</div></div></div>
+      <div class="dz-i"><div class="dz-ico" style="background:var(--pd)">⚡</div><div><div class="dz-t">Velocidade gera confiança</div><div class="dz-d">Lead sem resposta em 10 minutos já está comparando com a concorrência.</div></div></div>
+      <div class="dz-i"><div class="dz-ico" style="background:var(--teal-d)">🧭</div><div><div class="dz-t">Conduza, não empurre</div><div class="dz-d">"Quando você pode vir conhecer?" é melhor do que esperar a pessoa decidir.</div></div></div>
+      <div class="dz-i"><div class="dz-ico" style="background:var(--od)">📋</div><div><div class="dz-t">Registre tudo</div><div class="dz-d">Depois de cada contato, atualiza o CRM. Memória curta perde venda.</div></div></div>
+    </div></div></div>
+    <div class="pc"><div class="pc-h"><div class="pi" style="background:var(--bd);color:#60A5FA">🗺️</div><div><div class="pc-t">3 etapas do atendimento</div></div></div><div class="pc-b"><div class="el">
+      <div class="ei"><div class="enc"><div class="ecirc" style="color:#3B82F6;border-color:rgba(59,130,246,.4);background:rgba(59,130,246,.1)">1</div><div class="eline" style="background:rgba(59,130,246,.2)"></div></div><div class="econt"><div class="etag" style="color:#60A5FA;border-color:rgba(59,130,246,.3);background:rgba(59,130,246,.1)">Contato inicial</div><div class="et">Confirmação e agendamento</div><div class="eo">Confirmar interesse, entender o perfil e marcar a visita.</div><div class="ecols"><div><div class="esub">Como iniciar</div><div class="erows"><div class="er">Chame pelo nome. Sempre.</div><div class="er">Mencione o objetivo dela</div><div class="er">2 frases mostrando que leu o formulário</div></div></div><div><div class="esub">Ao agendar</div><div class="erows"><div class="er">Ofereça 2–3 opções de horário</div><div class="er">"Sem compromisso, só pra conhecer"</div><div class="er">Mande o endereço em seguida</div></div></div></div></div></div>
+      <div class="ei"><div class="enc"><div class="ecirc" style="color:#A855F7;border-color:rgba(168,85,247,.4);background:rgba(168,85,247,.1)">2</div><div class="eline" style="background:rgba(168,85,247,.2)"></div></div><div class="econt"><div class="etag" style="color:#C084FC;border-color:rgba(168,85,247,.3);background:rgba(168,85,247,.1)">Reunião</div><div class="et">Apresentação e proposta</div><div class="eo">Entender a fundo e apresentar a escola com contexto.</div><div class="ecols"><div><div class="esub">Perguntas-chave</div><div class="erows"><div class="er">"Qual sua maior dificuldade com tecnologia?"</div><div class="er">"Como seria sua vida em 6 meses resolvendo isso?"</div></div></div><div><div class="esub">Apresentar valor</div><div class="erows"><div class="er">Conecte ao objetivo dela</div><div class="er">Fale de resultado, não de conteúdo</div></div></div></div></div></div>
+      <div class="ei"><div class="enc"><div class="ecirc" style="color:#22C55E;border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.1)">3</div><div class="eline" style="display:none"></div></div><div class="econt"><div class="etag" style="color:#4ADE80;border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.1)">Integração</div><div class="et">Boas-vindas e início</div><div class="eo">Gerar segurança e garantir começo empolgante.</div><div class="ecols"><div><div class="esub">Segurança</div><div class="erows"><div class="er">"Qualquer dúvida, chama no WhatsApp"</div><div class="er">Apresente o professor pelo nome</div></div></div><div><div class="esub">CRM</div><div class="erows"><div class="er">Mover para "Matriculado" imediatamente</div><div class="er">Registrar turma e data de início</div></div></div></div></div></div>
+    </div></div></div>
+    <div class="pc"><div class="pc-h"><div class="pi" style="background:var(--rd);color:#F87171">⚖️</div><div><div class="pc-t">Regras do atendimento</div></div></div><div class="pc-b"><div class="rg">
+      <div class="ri"><div class="rnum">1</div><div class="rtxt"><strong>Leia o formulário antes de chamar.</strong> Atendimento genérico não converte.</div></div>
+      <div class="ri"><div class="rnum">2</div><div class="rtxt"><strong>Nunca deixe lead sem resposta.</strong> 10 minutos é o máximo.</div></div>
+      <div class="ri"><div class="rnum">3</div><div class="rtxt"><strong>Sempre defina próxima ação.</strong> Toda conversa termina com um próximo passo.</div></div>
+      <div class="ri"><div class="rnum">4</div><div class="rtxt"><strong>Preço não pelo WhatsApp.</strong> Leve para visita. Presencial converte mais.</div></div>
+      <div class="ri"><div class="rnum">5</div><div class="rtxt"><strong>Registre tudo no CRM.</strong> Se não está registrado, não aconteceu.</div></div>
+      <div class="ri"><div class="rnum">6</div><div class="rtxt"><strong>Tom leve sempre.</strong> Essa é a identidade da Bolsão.</div></div>
+    </div></div></div>
+  </div>
+  <div class="view" id="view-followup">
+    <div class="ph"><div><div class="ph-b">⏰ Follow-up</div><div class="ph-t">Conduzir sem <em>pressionar</em></div><div class="ph-s">Como agir em cada momento — quando o lead sumiu, ficou em dúvida ou precisou de um empurrãozinho.</div></div><div class="ph-kpis"><div class="ph-k"><div class="kn">4</div><div class="kl">momentos</div></div><div class="ph-k"><div class="kn">90d</div><div class="kl">ciclo</div></div></div></div>
+    <div class="fu-nav"><button class="funb active" onclick="fuT('sr',this)">📵 Sem resposta</button><button class="funb" onclick="fuT('pr',this)">🤝 Após reunião</button><button class="funb" onclick="fuT('ind',this)">🤔 Indecisão</button><button class="funb" onclick="fuT('enc',this)">🚪 Encerramento</button></div>
+    <div class="fup active" id="fu-sr"><div class="fuph" style="background:var(--bd);border:1px solid var(--bb)"><div class="fupi" style="background:rgba(59,130,246,.15);color:#60A5FA">📵</div><div><div class="fupt">Sem resposta após contato inicial</div><div class="fups" style="color:var(--txt2)">Retomar de forma leve, sem parecer insistente.</div><div class="fupw" style="color:#60A5FA;border-color:var(--bb);background:var(--bd)">⏱ 24h · 3d · 7d</div></div></div>
+      <div class="ma"><div class="mah"><div class="maht">💬 Mensagens</div><div class="mtabs"><button class="mtab active" onclick="mT(this,'sr','sr1')">24h</button><button class="mtab" onclick="mT(this,'sr','sr2')">3d</button><button class="mtab" onclick="mT(this,'sr','sr3')">7d</button></div></div>
+        <div class="mab" id="mb-sr">
+          <div id="sr1"><div class="mctx">Tom leve. Só confirmar que chegou.</div><div class="mbub" id="bsr1">Oi, <span class="var">[NOME]</span>! Tudo bem? 😊 Aqui é <span class="var">[SEU NOME]</span> da Bolsão Informática.
+
+Passei só pra confirmar que você recebeu minha mensagem. Qualquer dúvida, é só falar! 🤝</div><div class="mcr"><button class="cpb" onclick="cpB('bsr1',this)">📋 Copiar</button></div></div>
+          <div id="sr2" style="display:none"><div class="mbub" id="bsr2">Oi, <span class="var">[NOME]</span>! 👋 Sei que a semana anda corrida!
+
+<strong>8 em cada 10 vagas exigem ao menos o básico de informática</strong> — e a maioria não se candidata por isso.
+
+Quando tiver um minutinho, adoraria mostrar como funciona! 😊</div><div class="mcr"><button class="cpb" onclick="cpB('bsr2',this)">📋 Copiar</button></div></div>
+          <div id="sr3" style="display:none"><div class="mbub" id="bsr3">Oi, <span class="var">[NOME]</span>! Ainda faz sentido pra você conhecer o curso?
+
+Se mudou alguma coisa, pode me contar sem cerimônia. Estou aqui pra ajudar! 😊</div><div class="mcr"><button class="cpb" onclick="cpB('bsr3',this)">📋 Copiar</button></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="fup" id="fu-pr"><div class="fuph" style="background:var(--pd);border:1px solid var(--pb)"><div class="fupi" style="background:rgba(168,85,247,.15);color:#C084FC">🤝</div><div><div class="fupt">Após reunião sem resposta</div><div class="fups" style="color:var(--txt2)">Reforçar valor sem pressionar.</div><div class="fupw" style="color:#C084FC;border-color:var(--pb);background:var(--pd)">⏱ 24h · 3d · 7d</div></div></div>
+      <div class="ma"><div class="mah"><div class="maht">💬 Mensagens</div><div class="mtabs"><button class="mtab active" onclick="mT(this,'pr','pr1')">24h</button><button class="mtab" onclick="mT(this,'pr','pr2')">3d</button><button class="mtab" onclick="mT(this,'pr','pr3')">7d</button></div></div>
+        <div class="mab" id="mb-pr">
+          <div id="pr1"><div class="mbub" id="bpr1">Oi, <span class="var">[NOME]</span>! 😊 Foi muito bom te conhecer hoje!
+
+Tenho certeza que o curso é exatamente o que você precisa. <strong>Você vai se surpreender com o progresso!</strong>
+
+Qualquer dúvida pode chamar aqui. 🤝</div><div class="mcr"><button class="cpb" onclick="cpB('bpr1',this)">📋 Copiar</button></div></div>
+          <div id="pr2" style="display:none"><div class="mbub" id="bpr2">Oi, <span class="var">[NOME]</span>! Lembrei de você hoje.
+
+Um aluno com objetivo parecido com o seu em <strong>4 meses já estava empregado</strong>.
+
+Quando sentir que é a hora, a porta tá aberta! 😊</div><div class="mcr"><button class="cpb" onclick="cpB('bpr2',this)">📋 Copiar</button></div></div>
+          <div id="pr3" style="display:none"><div class="mbub" id="bpr3">Oi, <span class="var">[NOME]</span>! Temos condição especial essa semana — <span class="var">[DETALHE]</span>.
+
+É real e tem prazo. Me fala que resolvo rapidinho!
+
+Se não for o momento, tudo bem também. 😊</div><div class="mcr"><button class="cpb" onclick="cpB('bpr3',this)">📋 Copiar</button></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="fup" id="fu-ind"><div class="fuph" style="background:var(--od);border:1px solid var(--ob)"><div class="fupi" style="background:rgba(249,115,22,.15);color:#FB923C">🤔</div><div><div class="fupt">Lead em indecisão</div><div class="fups" style="color:var(--txt2)">"Vou pensar"... Traga clareza, não pressão.</div><div class="fupw" style="color:#FB923C;border-color:var(--ob);background:var(--od)">⏱ Sempre que identificar hesitação</div></div></div>
+      <div class="ma"><div class="mah"><div class="maht">💬 Mensagens</div><div class="mtabs"><button class="mtab active" onclick="mT(this,'ind','ind1')">Geral</button><button class="mtab" onclick="mT(this,'ind','ind2')">Financeiro</button><button class="mtab" onclick="mT(this,'ind','ind3')">Família</button></div></div>
+        <div class="mab" id="mb-ind">
+          <div id="ind1"><div class="mbub" id="bind1">Oi, <span class="var">[NOME]</span>! 😊
+
+Me conta: <strong>o que está pesando na decisão?</strong> Pode ser tempo, valor, dúvida sobre o curso...
+
+Se eu souber, posso te ajudar de verdade. Sem pressão! 🤝</div><div class="mcr"><button class="cpb" onclick="cpB('bind1',this)">📋 Copiar</button></div></div>
+          <div id="ind2" style="display:none"><div class="mbub" id="bind2">Oi, <span class="var">[NOME]</span>! Entendo que o financeiro pesa.
+
+<strong>Parcelamos a matrícula e podemos alinhar a data de início</strong> com seu momento.
+
+Posso te mandar os detalhes? 😊</div><div class="mcr"><button class="cpb" onclick="cpB('bind2',this)">📋 Copiar</button></div></div>
+          <div id="ind3" style="display:none"><div class="mbub" id="bind3">Oi, <span class="var">[NOME]</span>! Ótima ideia decidir em família! 😊
+
+Se quiser, pode trazer ele/ela aqui pra conhecer pessoalmente. Tenho horários essa semana. O que acha?</div><div class="mcr"><button class="cpb" onclick="cpB('bind3',this)">📋 Copiar</button></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="fup" id="fu-enc"><div class="fuph" style="background:var(--bg3);border:1px solid var(--border2)"><div class="fupi" style="background:var(--bg4);color:var(--txt3)">🚪</div><div><div class="fupt">Follow-up final</div><div class="fups" style="color:var(--txt2)">Porta aberta, sem ressentimento. Saia com elegância.</div><div class="fupw" style="color:var(--txt2);border-color:var(--border2);background:var(--bg4)">⏱ Após 30–60 dias</div></div></div>
+      <div class="ma"><div class="mah"><div class="maht">💬 Mensagens</div><div class="mtabs"><button class="mtab active" onclick="mT(this,'enc','enc1')">Sem resposta</button><button class="mtab" onclick="mT(this,'enc','enc2')">Rejeição</button><button class="mtab" onclick="mT(this,'enc','enc3')">Reativação</button></div></div>
+        <div class="mab" id="mb-enc">
+          <div id="enc1"><div class="mbub" id="benc1">Oi, <span class="var">[NOME]</span>! Vou deixar a bola com você! 😊
+
+Se um dia a hora chegar, a Bolsão está aqui. <strong>É só chegar, sem formalidade!</strong>
+
+Foi um prazer! 👋</div><div class="mcr"><button class="cpb" onclick="cpB('benc1',this)">📋 Copiar</button></div></div>
+          <div id="enc2" style="display:none"><div class="mbub" id="benc2">Oi, <span class="var">[NOME]</span>! Sem problema nenhum. 😊
+
+Obrigado pela honestidade! <strong>A porta da Bolsão fica sempre aberta.</strong> Sucesso! 🌟</div><div class="mcr"><button class="cpb" onclick="cpB('benc2',this)">📋 Copiar</button></div></div>
+          <div id="enc3" style="display:none"><div class="mbub" id="benc3">Oi, <span class="var">[NOME]</span>! Faz um tempão! 😊
+
+Aqui é <span class="var">[SEU NOME]</span> da Bolsão. Passando só dar um oi!
+
+<strong>Se surgiu algum projeto novo, estou aqui!</strong> Abraço! 🤝</div><div class="mcr"><button class="cpb" onclick="cpB('benc3',this)">📋 Copiar</button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- NOTIFICAÇÃO -->
+<div class="notif" id="notif">
+  <div class="n-h"><div class="n-d"></div><div class="n-tl">🎯 Novo lead chegou!</div><button class="n-cl" onclick="closeNotif()">✕</button></div>
+  <div class="n-nome" id="n-nome">—</div><div class="n-meta" id="n-meta">—</div>
+</div>
+
+<!-- CELEBRAÇÃO -->
+<div class="cel-ov" id="cel-ov">
+  <div class="cel-box"><div class="c-glow"></div><span class="c-emoji">🏆</span>
+    <div class="c-title">Fechou! <em>Matrícula!</em></div>
+    <div class="c-nome" id="c-nome">—</div>
+    <div class="c-sub">Mais um aluno na Bolsão 2.0!<br>O time é incrível. Bora continuar! 🚀</div>
+    <button class="c-btn" onclick="closeCel()">Show! Próximo lead 💪</button>
+  </div>
+</div>
+<div class="c-fw" id="c-fw"></div>
+
+<!-- MODAL LEAD -->
+<div class="ov" id="lead-ov" onclick="if(event.target===this)closeLead()">
+  <div class="modal">
+    <div class="mh"><div class="mav">👤</div><div class="mi"><div class="mn" id="mn">—</div><div class="msub" id="msub"></div></div><button class="mcl" onclick="closeLead()">✕</button></div>
+    <div class="mbody">
+      <div class="msec"><div class="msect">Dados pessoais</div><div class="mgrid" id="m-dados"></div></div>
+      <div class="msec"><div class="msect">Perfil e interesse</div><div class="mgrid" id="m-perfil"></div></div>
+      <div class="msec"><div class="msect">Etapa & Próxima ação</div><div class="mgrid">
+        <div><div style="font-size:10px;color:var(--txt3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">ETAPA</div><select class="msel" id="m-etapa"></select></div>
+        <div><div style="font-size:10px;color:var(--txt3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">PRÓXIMA AÇÃO</div><select class="msel" id="m-prox"></select></div>
+      </div></div>
+      <div class="msec"><div class="msect">Notas</div><div class="nlst" id="m-notas"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <textarea class="mta" id="nota-inp" placeholder="Adicionar anotação..." style="flex:1;height:60px"></textarea>
+          <button class="btn btn-p" style="align-self:flex-end;padding:9px 13px" onclick="addNota()">+ Nota</button>
+        </div>
+      </div>
+      <div class="msec" id="m-mot-sec"><div class="msect">Motivação</div><div id="m-mot" style="font-size:13px;color:var(--txt2);line-height:1.7;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:11px 13px"></div></div>
+    </div>
+    <div class="mfoot">
+      <button class="btn btn-d" onclick="deleteLead()">🗑 Excluir</button>
+      <div style="display:flex;gap:7px">
+        <button class="btn btn-g" onclick="closeLead()">Fechar</button>
+        <button class="btn btn-grn" onclick="openWpp()">💬 WhatsApp</button>
+        <button class="btn btn-p" onclick="saveLead()">💾 Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NOVO LEAD -->
+<div class="ov" id="nl-ov" onclick="if(event.target===this)closeNL()">
+  <div class="modal" style="max-width:500px">
+    <div class="mh"><div class="mav">➕</div><div class="mi"><div class="mn">Novo Lead</div><div class="msub"><span>Cadastro manual</span></div></div><button class="mcl" onclick="closeNL()">✕</button></div>
+    <div class="mbody">
+      <div class="mgrid">
+        <div><div style="font-size:10px;color:var(--txt3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">NOME *</div><input type="text" id="nl-nome" class="nli" placeholder="Nome completo"></div>
+        <div><div style="font-size:10px;color:var(--txt3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">WHATSAPP *</div><input type="tel" id="nl-wpp" class="nli" placeholder="(18) 99999-9999" maxlength="15" oninput="maskW(this)"></div>
+        <div><div style="font-size:10px;color:var(--txt3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">E-MAIL</div><input type="email" id="nl-email" class="nli" placeholder="email@exemplo.com"></div>
+        <div><div style="font-size:10px;color:var(--txt3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">ORIGEM</div><select id="nl-orig" class="msel"><option value="">Selecione</option><option>Instagram</option><option>Facebook</option><option>Indicação</option><option>Google</option><option>Anúncio</option><option>Formulário web</option><option>Ligação</option><option>Outro</option></select></div>
+        <div><div style="font-size:10px;color:var(--txt3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">OBJETIVO</div><select id="nl-obj" class="msel"><option value="">Selecione</option><option>Conseguir emprego</option><option>Crescer no trabalho</option><option>Abrir meu negócio</option><option>Uso pessoal / família</option><option>Estudos / faculdade</option><option>Para meu filho(a)</option></select></div>
+        <div><div style="font-size:10px;color:var(--txt3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.07em">NÍVEL</div><select id="nl-niv" class="msel"><option value="">Selecione</option><option>Zero — nunca usei</option><option>Básico — uso pouco</option><option>Intermediário</option></select></div>
+      </div>
+    </div>
+    <div class="mfoot"><button class="btn btn-g" onclick="closeNL()">Cancelar</button><button class="btn btn-p" style="padding:10px 22px" onclick="saveNL()">➕ Criar Lead</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════════════
+   SUPABASE — cliente REST puro, sem dependências
+════════════════════════════════════════════════ */
+let SB_URL = localStorage.getItem('sb_url') || '';
+let SB_KEY = localStorage.getItem('sb_key') || '';
+
+function sbReady() {
+  return SB_URL && SB_KEY && SB_URL.startsWith('http');
+}
+
+/* Headers para leitura/escrita */
+function sbH(extra) {
+  return Object.assign({
+    'Content-Type': 'application/json',
+    'apikey': SB_KEY,
+    'Authorization': 'Bearer ' + SB_KEY
+  }, extra || {});
+}
+
+async function sbSelect() {
+  const r = await fetch(SB_URL + '/rest/v1/leads?order=ts.desc&limit=500', {
+    headers: sbH({ 'Prefer': 'return=representation' })
+  });
+  if (!r.ok) throw new Error('SELECT ' + r.status + ': ' + await r.text());
+  return r.json();
+}
+
+async function sbUpsert(row) {
+  const r = await fetch(SB_URL + '/rest/v1/leads', {
+    method: 'POST',
+    headers: sbH({ 'Prefer': 'resolution=merge-duplicates,return=minimal' }),
+    body: JSON.stringify(row)
+  });
+  if (!r.ok) throw new Error('UPSERT ' + r.status + ': ' + await r.text());
+}
+
+/* DELETE de UM lead — usa operador eq no parâmetro de query */
+async function sbDelete(id) {
+  const url = SB_URL + '/rest/v1/leads?id=eq.' + encodeURIComponent(id);
+  const r = await fetch(url, {
+    method: 'DELETE',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  });
+  if (!r.ok) throw new Error('DELETE ' + r.status + ': ' + await r.text());
+}
+
+/* DELETE de TODOS os leads */
+async function sbDeleteAll() {
+  /* neq.empty é um truque seguro — corresponde a todos os registros */
+  const url = SB_URL + '/rest/v1/leads?id=neq.__placeholder__never__';
+  /* Supabase exige que o filtro de DELETE seja válido.
+     Melhor abordagem: buscar todos os ids e deletar em lote via IN */
+  const rows = await sbSelect();
+  if (!rows.length) return;
+  const ids = rows.map(r => r.id);
+  /* Monta filtro  id=in.(id1,id2,...) */
+  const filter = 'id=in.(' + ids.map(i => encodeURIComponent(i)).join(',') + ')';
+  const r = await fetch(SB_URL + '/rest/v1/leads?' + filter, {
+    method: 'DELETE',
+    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  });
+  if (!r.ok) throw new Error('DELETE ALL ' + r.status + ': ' + await r.text());
+}
+
+/* Mapeia row do banco → objeto JS */
+function dbToL(r) {
+  return {
+    id: r.id, ts: r.ts,
+    nome: r.nome || '', wpp: r.wpp || '', email: r.email || '',
+    idade: r.idade || '', para: r.para || '',
+    obj: r.obj || '', nivel: r.nivel || '',
+    inicio: r.inicio || '', periodo: r.periodo || '',
+    motivacao: r.motivacao || '', origem: r.origem || '',
+    score: r.score || '❄️ Frio',
+    etapa: r.etapa || 'Novo Lead',
+    proximaAcao: r.proxima_acao || 'Primeiro contato',
+    notas: Array.isArray(r.notas) ? r.notas : [],
+    data: r.data || '', hora: r.hora || '',
+    fonte: r.fonte || '', escola: r.escola || ''
+  };
+}
+
+/* Mapeia objeto JS → row do banco */
+function lToDb(l) {
+  return {
+    id: l.id, ts: l.ts,
+    nome: l.nome, wpp: l.wpp, email: l.email || '',
+    idade: l.idade || '', para: l.para || '',
+    obj: l.obj || '', nivel: l.nivel || '',
+    inicio: l.inicio || '', periodo: l.periodo || '',
+    motivacao: l.motivacao || '', origem: l.origem || '',
+    score: l.score || '❄️ Frio',
+    etapa: l.etapa || 'Novo Lead',
+    proxima_acao: l.proximaAcao || 'Primeiro contato',
+    notas: l.notas || [],
+    data: l.data || '', hora: l.hora || '',
+    fonte: l.fonte || 'manual',
+    escola: l.escola || 'Bolsão Informática 2.0'
+  };
+}
+
+/* ════════════════════════════════
+   AUTH
+════════════════════════════════ */
+const UK = 'bolsao_users_v2', SK = 'bolsao_session';
+
+function getUsers() { try { return JSON.parse(localStorage.getItem(UK) || '[]'); } catch { return []; } }
+function saveUsers(u) { localStorage.setItem(UK, JSON.stringify(u)); }
+function hp(p) { return btoa(unescape(encodeURIComponent(p))); }
+function getSess() { try { return JSON.parse(localStorage.getItem(SK)); } catch { return null; } }
+
+function initUsers() {
+  if (!getUsers().length)
+    saveUsers([{ id: 'u1', name: 'Administrador', login: 'admin', hash: hp('bolsao2024'), role: 'admin', created: new Date().toLocaleDateString('pt-BR') }]);
+}
+
+function openLogin() {
+  document.getElementById('li-u').value = '';
+  document.getElementById('li-p').value = '';
+  document.getElementById('li-err').classList.remove('show');
+  document.getElementById('li-ov').classList.add('open');
+  setTimeout(() => document.getElementById('li-u').focus(), 80);
+}
+function closeLogin() { document.getElementById('li-ov').classList.remove('open'); }
+
+function doLogin() {
+  const u = fv('li-u'), p = document.getElementById('li-p').value;
+  const err = document.getElementById('li-err');
+  if (!u || !p) { err.textContent = 'Preencha usuário e senha.'; err.classList.add('show'); return; }
+  const found = getUsers().find(x => x.login === u && x.hash === hp(p));
+  if (!found) { err.textContent = 'Usuário ou senha incorretos.'; err.classList.add('show'); document.getElementById('li-p').value = ''; return; }
+  /* Desbloqueia AudioContext no clique humano */
+  try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) {}
+  localStorage.setItem(SK, JSON.stringify({ id: found.id, name: found.name, login: found.login, role: found.role }));
+  closeLogin();
+  showCRM(found);
+}
+
+function doLogout() {
+  if (pollT) { clearInterval(pollT); pollT = null; }
+  localStorage.removeItem(SK);
+  document.getElementById('crm-screen').classList.remove('on');
+  document.getElementById('form-screen').style.display = 'flex';
+}
+
+/* ════════════════════════════════
+   CRM STATE
+════════════════════════════════ */
+let leads = [], cView = 'kanban', cFlt = '', cSrch = '', actLead = null;
+let soundOn = true, actx = null, pollT = null, lastHash = '';
+
+const ETAPAS = ['Novo Lead', 'Contatado', 'Interessado', 'Agendado', 'Matriculado', 'Perdido'];
+const PROX   = ['Primeiro contato', 'Enviar proposta', 'Ligar para follow-up', 'Agendar visita', 'Confirmar matrícula', 'Aguardar retorno', '—'];
+const COL    = { 'Novo Lead': '#3B82F6', 'Contatado': '#F97316', 'Interessado': '#A855F7', 'Agendado': '#F5C842', 'Matriculado': '#22C55E', 'Perdido': '#EF4444' };
+const SCM    = { '🔥 Quente': 'quente', '🌡️ Morno': 'morno', '❄️ Frio': 'frio' };
+
+function showCRM(user) {
+  document.getElementById('form-screen').style.display = 'none';
+  document.getElementById('crm-screen').classList.add('on');
+  document.getElementById('uchname').textContent = user.name.split(' ')[0];
+  loadCfgUI();
+  loadLeads().then(() => startPoll());
+}
+
+/* ════════════ SUPABASE CONFIG ════════════ */
+function loadCfgUI() {
+  if (SB_URL) document.getElementById('cfg-url').value = SB_URL;
+  if (SB_KEY) document.getElementById('cfg-key').value = SB_KEY;
+}
+
+async function saveSupaCfg() {
+  const u = fv('cfg-url'), k = fv('cfg-key');
+  if (!u || !k) { showCfgMsg('Preencha os dois campos.', 'err'); return; }
+  SB_URL = u; SB_KEY = k;
+  localStorage.setItem('sb_url', u); localStorage.setItem('sb_key', k);
+  setSS('busy', 'Testando...');
+  try {
+    await sbSelect();
+    showCfgMsg('✅ Conexão OK! Sync ativado — leads de qualquer device chegam aqui.', 'ok');
+    setSS('ok', 'Supabase ativo');
+    startPoll();
+    toast('Supabase configurado com sucesso!', 'ok');
+  } catch (e) {
+    showCfgMsg('❌ Erro: ' + e.message, 'err');
+    setSS('err', 'Erro na conexão');
+  }
+}
+
+function showCfgMsg(m, t) { const e = document.getElementById('cfg-msg'); e.textContent = m; e.className = 'cfg-msg ' + t; }
+function setSS(s, l) { document.getElementById('sdot').className = 'sync-d ' + s; document.getElementById('slbl').textContent = l; }
+
+/* ════════════ STORAGE ════════════ */
+function toLS() { try { localStorage.setItem('bolsao_leads_v2', JSON.stringify(leads)); } catch (e) {} }
+function fromLS() { try { return JSON.parse(localStorage.getItem('bolsao_leads_v2') || '[]'); } catch { return []; } }
+
+async function loadLeads() {
+  setSS('busy', 'Carregando...');
+  if (sbReady()) {
+    try {
+      const rows = await sbSelect();
+      leads = rows.map(dbToL);
+      toLS();
+      lastHash = leads.map(l => l.id).join(',');
+      setSS('ok', 'Supabase ativo');
+      render();
+      return;
+    } catch (e) { setSS('err', 'Erro ao carregar'); }
+  } else {
+    setSS('err', 'Configure o Supabase');
+  }
+  leads = fromLS();
+  lastHash = leads.map(l => l.id).join(',');
+  render();
+}
+
+/* ════════════ POLLING 3s ════════════ */
+function startPoll() {
+  if (pollT) clearInterval(pollT);
+  if (!sbReady()) { setSS('err', 'Configure o Supabase'); return; }
+  pollT = setInterval(async () => {
+    try {
+      const rows = await sbSelect();
+      const fresh = rows.map(dbToL);
+      const nh = fresh.map(l => l.id).join(',');
+      if (nh === lastHash) return;
+      const known = new Set(leads.map(l => l.id));
+      const news = fresh.filter(l => !known.has(l.id));
+      leads = fresh; lastHash = nh; toLS(); render();
+      news.forEach(l => onNewLead(l));
+      setSS('ok', 'Supabase ativo');
+    } catch (e) { setSS('err', 'Sem conexão'); }
+  }, 3000);
+}
+
+/* ════════════ SOM ════════════ */
+function getACtx() {
+  if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+function toggleSnd() {
+  soundOn = !soundOn;
+  const b = document.getElementById('sndbtn');
+  b.textContent = soundOn ? '🔔 Som' : '🔕 Som';
+  b.className = 'sbtn ' + (soundOn ? 'on' : 'off');
+}
+function playNew() {
+  if (!soundOn) return;
+  try {
+    const ctx = getACtx();
+    [0, 0.2].forEach(d => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination); o.type = 'sine';
+      o.frequency.setValueAtTime(900, ctx.currentTime + d);
+      o.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + d + 0.1);
+      g.gain.setValueAtTime(0.001, ctx.currentTime + d);
+      g.gain.linearRampToValueAtTime(0.4, ctx.currentTime + d + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + d + 0.22);
+      o.start(ctx.currentTime + d); o.stop(ctx.currentTime + d + 0.28);
+    });
+  } catch (e) {}
+}
+function playCel() {
+  if (!soundOn) return;
+  try {
+    const ctx = getACtx();
+    [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain(), d = i * 0.2;
+      o.connect(g); g.connect(ctx.destination); o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.001, ctx.currentTime + d);
+      g.gain.linearRampToValueAtTime(0.45, ctx.currentTime + d + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + d + 0.6);
+      o.start(ctx.currentTime + d); o.stop(ctx.currentTime + d + 0.65);
+    });
+    setTimeout(() => {
+      try {
+        const c = getACtx(), o = c.createOscillator(), g = c.createGain();
+        o.connect(g); g.connect(c.destination); o.type = 'sine'; o.frequency.value = 1046.5;
+        g.gain.setValueAtTime(0.4, c.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 1.4);
+        o.start(c.currentTime); o.stop(c.currentTime + 1.4);
+      } catch (e) {}
+    }, 820);
+  } catch (e) {}
+}
+
+/* ════════════ NOTIFICAÇÃO ════════════ */
+function onNewLead(l) {
+  playNew();
+  document.getElementById('n-nome').textContent = l.nome;
+  document.getElementById('n-meta').textContent = (l.obj || '') + (l.periodo ? ' · ' + l.periodo : '') + (l.data ? ' · ' + l.data + ' ' + l.hora : '');
+  const n = document.getElementById('notif'); n.classList.add('show');
+  clearTimeout(n._t); n._t = setTimeout(() => n.classList.remove('show'), 7000);
+}
+function closeNotif() { document.getElementById('notif').classList.remove('show'); }
+
+/* ════════════ CELEBRAÇÃO ════════════ */
+function trigCel(nome) {
+  playCel();
+  document.getElementById('c-nome').textContent = nome;
+  document.getElementById('cel-ov').classList.add('show');
+  spawnConf();
+}
+function closeCel() { document.getElementById('cel-ov').classList.remove('show'); document.getElementById('c-fw').innerHTML = ''; }
+function spawnConf() {
+  const w = document.getElementById('c-fw'); w.innerHTML = '';
+  const c = ['#F5C842', '#22C55E', '#3B82F6', '#A855F7', '#F97316', '#EF4444', '#14B8A6', '#fff'];
+  for (let i = 0; i < 90; i++) {
+    const el = document.createElement('div'); el.className = 'conf';
+    const sz = Math.random() * 8 + 4;
+    el.style.cssText = `left:${Math.random()*100}%;width:${sz}px;height:${sz}px;background:${c[~~(Math.random()*c.length)]};animation-duration:${Math.random()*2+1.5}s;animation-delay:${Math.random()*0.8}s;border-radius:${Math.random()>.5?'50%':'2px'};`;
+    w.appendChild(el);
+  }
+}
+
+/* ════════════ VIEWS ════════════ */
+function getFlt() {
+  return leads.filter(l => {
+    const me = !cFlt || l.etapa === cFlt;
+    const q = cSrch.toLowerCase();
+    const ms = !q || (l.nome||'').toLowerCase().includes(q) || (l.wpp||'').includes(q) || (l.obj||'').toLowerCase().includes(q);
+    return me && ms;
+  });
+}
+function onSearch() { cSrch = document.getElementById('srch').value; render(); }
+function fltE(v) {
+  cFlt = v;
+  document.querySelectorAll('.sidebar .sbi').forEach(e => e.classList.remove('active'));
+  const m = { '': 'nav-all', 'Novo Lead': 'nav-novo', 'Contatado': 'nav-contatado', 'Interessado': 'nav-interessado', 'Agendado': 'nav-agendado', 'Matriculado': 'nav-matriculado', 'Perdido': 'nav-perdido' };
+  const el = document.getElementById(m[v] || 'nav-all'); if (el) el.classList.add('active');
+  render();
+}
+function setV(v) {
+  cView = v;
+  document.querySelectorAll('.view').forEach(e => e.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  document.querySelectorAll('[id^="nav-"]').forEach(e => e.classList.remove('active'));
+  const n = document.getElementById('nav-' + v); if (n) n.classList.add('active');
+  if (v === 'users') renderUsers();
+  render();
+}
+
+/* ════════════ RENDER ════════════ */
+function render() {
+  updC();
+  document.getElementById('stat-tot').textContent = leads.length;
+  if (cView === 'kanban') renderKB();
+  else if (cView === 'lista') renderLista();
+  else if (cView === 'dash') renderDash();
+}
+
+function renderKB() {
+  const f = getFlt(), bd = document.getElementById('kb'); bd.innerHTML = '';
+  ETAPAS.forEach(et => {
+    const cards = f.filter(l => (l.etapa || 'Novo Lead') === et);
+    const col = document.createElement('div'); col.className = 'col';
+    col.innerHTML = `<div class="col-h"><div class="cdot" style="background:${COL[et]}"></div><div class="ctitle">${et}</div><div class="ccount">${cards.length}</div></div><div class="col-b">${cards.length ? cards.map(cH).join('') : '<div style="text-align:center;padding:16px;color:var(--txt3);font-size:12px">Vazio</div>'}</div>`;
+    bd.appendChild(col);
+  });
+}
+function cH(l) {
+  const sc = SCM[l.score] || 'frio', tags = [l.obj, l.nivel, l.periodo].filter(Boolean);
+  const iN = (Date.now() - (l.ts || 0)) < 180000;
+  return `<div class="lcard${iN ? ' new-pulse' : ''}" onclick="openLead('${l.id}')">
+    ${iN ? '<div class="nbadge">novo</div>' : ''}
+    <div class="lc-top"><div class="lc-n">${esc(l.nome)}</div>${l.score ? `<div class="lsc ${sc}">${l.score}</div>` : ''}</div>
+    <div class="lc-info"><div class="lc-row">📱 ${esc(l.wpp)}</div>${l.email ? `<div class="lc-row">📧 ${esc(l.email)}</div>` : ''}</div>
+    ${tags.length ? `<div class="lc-tags">${tags.map(t => `<span class="ltag">${esc(t)}</span>`).join('')}</div>` : ''}
+    <div class="lc-ft"><span class="lc-dt">${l.data || ''} ${l.hora || ''}</span><span class="lc-ac">→ ${esc(l.proximaAcao || '—')}</span></div>
+  </div>`;
+}
+
+function renderLista() {
+  const f = getFlt();
+  document.getElementById('lcount').textContent = f.length + ' lead' + (f.length !== 1 ? 's' : '');
+  const tb = document.getElementById('ltb');
+  if (!f.length) { tb.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:28px">Nenhum lead</td></tr>`; return; }
+  tb.innerHTML = f.map(l => {
+    const sc = SCM[l.score] || 'frio';
+    return `<tr onclick="openLead('${l.id}')"><td class="nc">${esc(l.nome)}</td><td style="font-family:monospace;font-size:11px">${esc(l.wpp)}</td><td><span class="pill ${pC(l.etapa)}">${esc(l.etapa || 'Novo Lead')}</span></td><td><span class="lsc ${sc}" style="display:inline-flex;font-size:10px;padding:3px 8px;border-radius:100px">${esc(l.score || '—')}</span></td><td>${esc(l.obj || '—')}</td><td>${esc(l.nivel || '—')}</td><td>${esc(l.origem || '—')}</td><td>${esc(l.data || '—')}</td></tr>`;
+  }).join('');
+}
+function pC(e) { return ({ 'Novo Lead': 'novo', 'Contatado': 'contatado', 'Interessado': 'interessado', 'Agendado': 'agendado', 'Matriculado': 'matriculado', 'Perdido': 'perdido' }[e] || 'novo'); }
+
+function renderDash() {
+  const tot = leads.length, mat = leads.filter(l => l.etapa === 'Matriculado').length;
+  const hot = leads.filter(l => l.score === '🔥 Quente').length, perd = leads.filter(l => l.etapa === 'Perdido').length;
+  const conv = tot ? Math.round(mat / tot * 100) : 0;
+  const oC = {}, rC = {};
+  leads.forEach(l => { if (l.obj) oC[l.obj] = (oC[l.obj] || 0) + 1; if (l.origem) rC[l.origem] = (rC[l.origem] || 0) + 1; });
+  const tO = Object.entries(oC).sort((a, b) => b[1] - a[1]).slice(0, 4);
+  const tR = Object.entries(rC).sort((a, b) => b[1] - a[1]).slice(0, 4);
+  document.getElementById('dgrid').innerHTML = `
+    <div class="scard"><div class="sn" style="color:var(--gold)">${tot}</div><div class="sl">Total Leads</div></div>
+    <div class="scard"><div class="sn" style="color:var(--green)">${mat}</div><div class="sl">Matriculados</div><div class="ss">Taxa ${conv}%</div></div>
+    <div class="scard"><div class="sn" style="color:#F87171">${hot}</div><div class="sl">Quentes 🔥</div></div>
+    <div class="scard"><div class="sn" style="color:var(--red)">${perd}</div><div class="sl">Perdidos</div></div>
+    ${ETAPAS.map(e => `<div class="scard"><div class="sn" style="color:${COL[e]}">${leads.filter(l => (l.etapa || 'Novo Lead') === e).length}</div><div class="sl">${e}</div></div>`).join('')}
+    ${tO.length ? `<div class="scard" style="grid-column:span 2"><div class="sl" style="margin-bottom:8px">TOP OBJETIVOS</div>${tO.map(([k, v]) => `<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);color:var(--txt2)"><span>${esc(k)}</span><span style="color:var(--txt);font-weight:700">${v}</span></div>`).join('')}</div>` : ''}
+    ${tR.length ? `<div class="scard" style="grid-column:span 2"><div class="sl" style="margin-bottom:8px">TOP ORIGENS</div>${tR.map(([k, v]) => `<div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);color:var(--txt2)"><span>${esc(k)}</span><span style="color:var(--txt);font-weight:700">${v}</span></div>`).join('')}</div>` : ''}`;
+}
+function updC() {
+  document.getElementById('cnt-all').textContent = leads.length;
+  const m = { novo: 'Novo Lead', contatado: 'Contatado', interessado: 'Interessado', agendado: 'Agendado', matriculado: 'Matriculado', perdido: 'Perdido' };
+  Object.entries(m).forEach(([k, v]) => { const e = document.getElementById('cnt-' + k); if (e) e.textContent = leads.filter(l => (l.etapa || 'Novo Lead') === v).length; });
+}
+
+/* ════════════ MODAL LEAD ════════════ */
+function openLead(id) {
+  actLead = leads.find(l => l.id === id); if (!actLead) return; const l = actLead;
+  document.getElementById('mn').textContent = l.nome;
+  document.getElementById('msub').innerHTML = `<span>📱 ${esc(l.wpp)}</span>${l.email ? `<span>📧 ${esc(l.email)}</span>` : ''}<span>📅 ${l.data || ''} ${l.hora || ''}</span>`;
+  document.getElementById('m-dados').innerHTML = mF([['WhatsApp', l.wpp], ['E-mail', l.email], ['Idade', l.idade], ['Para', l.para], ['Origem', l.origem], ['Score', l.score]]);
+  document.getElementById('m-perfil').innerHTML = mF([['Objetivo', l.obj], ['Nível', l.nivel], ['Período', l.periodo], ['Início', l.inicio]]);
+  document.getElementById('m-etapa').innerHTML = ETAPAS.map(e => `<option ${e === l.etapa ? 'selected' : ''}>${e}</option>`).join('');
+  document.getElementById('m-prox').innerHTML = PROX.map(p => `<option ${p === l.proximaAcao ? 'selected' : ''}>${p}</option>`).join('');
+  renderNotas();
+  const ms = document.getElementById('m-mot-sec');
+  if (l.motivacao) { document.getElementById('m-mot').textContent = l.motivacao; ms.style.display = ''; } else ms.style.display = 'none';
+  document.getElementById('lead-ov').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function mF(arr) { return arr.map(([lbl, v]) => `<div class="mf"><div class="mfl">${lbl}</div><div class="mfv ${v ? '' : 'empty'}">${v ? esc(v) : 'Não informado'}</div></div>`).join(''); }
+function renderNotas() {
+  const l = actLead, c = document.getElementById('m-notas');
+  if (!l.notas || !l.notas.length) { c.innerHTML = '<div style="font-size:12px;color:var(--txt3);padding:10px;text-align:center">Sem notas ainda</div>'; return; }
+  c.innerHTML = l.notas.slice().reverse().map(n => `<div class="nitem"><div class="nitem-t">${esc(n.txt)}</div><div class="nitem-m">${n.data} ${n.hora}</div></div>`).join('');
+}
+function addNota() {
+  const inp = document.getElementById('nota-inp'), txt = inp.value.trim();
+  if (!txt || !actLead) return;
+  const now = new Date(); if (!actLead.notas) actLead.notas = [];
+  actLead.notas.push({ txt, data: now.toLocaleDateString('pt-BR'), hora: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) });
+  inp.value = ''; renderNotas(); toast('Nota adicionada!', 'ok');
+}
+
+async function saveLead() {
+  if (!actLead) return;
+  const prev = actLead.etapa;
+  actLead.etapa = document.getElementById('m-etapa').value;
+  actLead.proximaAcao = document.getElementById('m-prox').value;
+  const idx = leads.findIndex(l => l.id === actLead.id);
+  if (idx >= 0) leads[idx] = actLead;
+  toLS();
+  /* Atualiza no Supabase */
+  if (sbReady()) {
+    setSS('busy', 'Salvando...');
+    try { await sbUpsert(lToDb(actLead)); setSS('ok', 'Supabase ativo'); }
+    catch (e) { setSS('err', 'Erro ao salvar'); toast('Erro ao salvar: ' + e.message, 'err'); return; }
+  }
+  /* Atualiza o lastHash para o polling não reverter */
+  lastHash = leads.map(l => l.id).join(',');
+  render(); closeLead(); toast('Salvo com sucesso!', 'ok');
+  if (prev !== 'Matriculado' && actLead.etapa === 'Matriculado')
+    setTimeout(() => trigCel(actLead.nome.split(' ')[0]), 300);
+}
+
+/* ────────────────────────────────────────────
+   DELETAR UM LEAD — corrigido
+   Problema anterior: header 'Prefer' no DELETE
+   causava erro 406 no Supabase silenciosamente.
+   Agora os headers são mínimos (só auth).
+──────────────────────────────────────────── */
+async function deleteLead() {
+  if (!actLead) return;
+  if (!confirm('Excluir este lead permanentemente?')) return;
+  const id = actLead.id;
+  setSS('busy', 'Excluindo...');
+  if (sbReady()) {
+    try {
+      await sbDelete(id);
+    } catch (e) {
+      setSS('err', 'Erro ao excluir');
+      toast('Erro ao excluir: ' + e.message, 'err');
+      return;
+    }
+  }
+  leads = leads.filter(l => l.id !== id);
+  lastHash = leads.map(l => l.id).join(',');
+  toLS(); render(); closeLead();
+  setSS('ok', sbReady() ? 'Supabase ativo' : 'Local');
+  toast('Lead excluído com sucesso.', 'ok');
+}
+
+/* ────────────────────────────────────────────
+   LIMPAR TUDO — corrigido
+   Busca ids no banco e deleta via filtro IN,
+   uma única requisição HTTP.
+──────────────────────────────────────────── */
+async function clearAll() {
+  if (!confirm('Apagar TODOS os leads? Esta ação não pode ser desfeita.')) return;
+  setSS('busy', 'Limpando...');
+  if (sbReady()) {
+    try {
+      await sbDeleteAll();
+    } catch (e) {
+      setSS('err', 'Erro ao limpar');
+      toast('Erro ao limpar: ' + e.message, 'err');
+      return;
+    }
+  }
+  leads = []; lastHash = '';
+  toLS(); render();
+  setSS('ok', sbReady() ? 'Supabase ativo' : 'Local');
+  toast('Todos os leads foram removidos.', 'ok');
+}
+
+function openWpp() {
+  if (!actLead) return;
+  const n = actLead.wpp.replace(/\D/g, ''), f = n.startsWith('55') ? n : '55' + n;
+  window.open(`https://wa.me/${f}?text=${encodeURIComponent('Oi ' + actLead.nome.split(' ')[0] + '! Aqui é da Bolsão Informática. Tudo bem?')}`, '_blank');
+}
+function closeLead() { document.getElementById('lead-ov').classList.remove('open'); document.body.style.overflow = ''; actLead = null; }
+
+/* ════════════ NOVO LEAD ════════════ */
+function openNL() {
+  ['nl-nome', 'nl-wpp', 'nl-email'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('nl-orig').selectedIndex = 0;
+  document.getElementById('nl-obj').selectedIndex = 0;
+  document.getElementById('nl-niv').selectedIndex = 0;
+  document.getElementById('nl-ov').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('nl-nome').focus(), 80);
+}
+function closeNL() { document.getElementById('nl-ov').classList.remove('open'); document.body.style.overflow = ''; }
+
+async function saveNL() {
+  const nome = fv('nl-nome'), wpp = fv('nl-wpp');
+  if (!nome) { toast('Informe o nome do lead.', 'err'); document.getElementById('nl-nome').focus(); return; }
+  if (!wpp || wpp.replace(/\D/g, '').length < 10) { toast('Informe um WhatsApp válido com DDD.', 'err'); document.getElementById('nl-wpp').focus(); return; }
+  const now = new Date();
+  const lead = {
+    id: 'lead_' + now.getTime(), ts: now.getTime(), nome, wpp,
+    email: fv('nl-email'), origem: document.getElementById('nl-orig').value,
+    obj: document.getElementById('nl-obj').value, nivel: document.getElementById('nl-niv').value,
+    periodo: '', inicio: '', idade: '', para: '',
+    score: '❄️ Frio', etapa: 'Novo Lead', proximaAcao: 'Primeiro contato',
+    motivacao: '', data: now.toLocaleDateString('pt-BR'),
+    hora: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+    notas: [], fonte: 'manual', escola: 'Bolsão Informática 2.0'
+  };
+  if (sbReady()) {
+    setSS('busy', 'Salvando...');
+    try { await sbUpsert(lToDb(lead)); setSS('ok', 'Supabase ativo'); }
+    catch (e) { setSS('err', 'Erro'); toast('Erro ao criar lead: ' + e.message, 'err'); return; }
+  }
+  leads.unshift(lead);
+  lastHash = leads.map(l => l.id).join(',');
+  toLS(); render(); closeNL();
+  toast('Lead criado com sucesso!', 'ok');
+  onNewLead(lead);
+}
+
+/* ════════════ USUÁRIOS ════════════ */
+function renderUsers() {
+  const users = getUsers(), sess = getSess(), MAX = 5;
+  const wrap = document.getElementById('uw');
+  const rows = users.map(u => `
+    <div class="u-row">
+      <div class="u-av">${u.name.charAt(0).toUpperCase()}</div>
+      <div class="u-i"><div class="u-nm">${esc(u.name)}</div><div class="u-lg">@${esc(u.login)}</div></div>
+      <span class="u-role ${u.role}">${u.role === 'admin' ? '⭐ Admin' : '👤 Usuário'}</span>
+      <span style="font-size:11px;color:var(--txt3)">${u.created || '—'}</span>
+      ${u.id !== sess?.id ? `<button class="u-del" onclick="delUser('${u.id}')">Remover</button>` : '<span style="font-size:11px;color:var(--txt3);padding:5px 10px">Você</span>'}
+    </div>`).join('');
+  const canAdd = users.length < MAX;
+  wrap.innerHTML = `
+    <div class="u-hdr"><div><div class="u-t">Gestão de <em>Usuários</em></div><div class="u-s">Controle quem acessa o CRM. Máximo ${MAX} contas.</div></div><div class="u-lim">${users.length}/${MAX}</div></div>
+    ${rows}
+    ${canAdd ? `
+    <div class="nu-card"><div class="nu-t">➕ Criar nova conta</div>
+      <div class="nu-g">
+        <div><label class="nu-l">NOME *</label><input type="text" id="nu-name" class="nu-in" placeholder="Nome completo"></div>
+        <div><label class="nu-l">USUÁRIO (login) *</label><input type="text" id="nu-login" class="nu-in" placeholder="Ex: joao.silva"></div>
+        <div><label class="nu-l">SENHA *</label><input type="password" id="nu-pass" class="nu-in" placeholder="Mínimo 6 caracteres"></div>
+        <div><label class="nu-l">PERFIL</label><select id="nu-role" class="nu-sel"><option value="user">👤 Usuário</option><option value="admin">⭐ Admin</option></select></div>
+      </div>
+      <button class="btn btn-p" style="padding:10px 20px" onclick="createUser()">Criar Conta</button>
+    </div>` : `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:18px;text-align:center;color:var(--txt3);font-size:13px">Limite de ${MAX} contas atingido.</div>`}`;
+}
+function createUser() {
+  const name = fv('nu-name'), login = fv('nu-login').toLowerCase().replace(/\s/g, ''), pass = document.getElementById('nu-pass').value, role = document.getElementById('nu-role').value;
+  if (!name || !login || !pass) { toast('Preencha todos os campos.', 'err'); return; }
+  if (pass.length < 6) { toast('Senha mínima de 6 caracteres.', 'err'); return; }
+  const users = getUsers();
+  if (users.length >= 5) { toast('Limite atingido.', 'err'); return; }
+  if (users.find(u => u.login === login)) { toast('Login já em uso.', 'err'); return; }
+  users.push({ id: 'u' + Date.now(), name, login, hash: hp(pass), role, created: new Date().toLocaleDateString('pt-BR') });
+  saveUsers(users); renderUsers(); toast('Conta criada!', 'ok');
+}
+function delUser(id) { if (!confirm('Remover esta conta?')) return; saveUsers(getUsers().filter(u => u.id !== id)); renderUsers(); toast('Conta removida.', ''); }
+
+/* ════════════ EXPORT / AMOSTRAS ════════════ */
+function exportCSV() {
+  if (!leads.length) { toast('Nenhum lead para exportar.', ''); return; }
+  const cols = ['id', 'nome', 'wpp', 'email', 'idade', 'para', 'obj', 'nivel', 'periodo', 'inicio', 'origem', 'score', 'etapa', 'proximaAcao', 'motivacao', 'data', 'hora', 'fonte'];
+  const csv = '\uFEFF' + [cols.join(';'), ...leads.map(l => cols.map(c => '"' + String(l[c] || '').replace(/"/g, '""') + '"').join(';'))].join('\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })); a.download = 'bolsao_' + new Date().toISOString().slice(0, 10) + '.csv'; a.click();
+  toast('CSV exportado!', 'ok');
+}
+
+async function loadSamples() {
+  if (!confirm('Adicionar 6 leads de demonstração?')) return;
+  const now = new Date();
+  const ss = [
+    { nome: 'Ana Paula Ferreira', wpp: '(18) 99823-4567', obj: 'Conseguir emprego', nivel: 'Zero — nunca usei', periodo: 'Manhã', origem: 'Instagram', score: '🔥 Quente', etapa: 'Novo Lead' },
+    { nome: 'Carlos Silva', wpp: '(18) 98765-4321', obj: 'Crescer no trabalho', nivel: 'Básico — uso pouco', periodo: 'Noite', origem: 'Indicação', score: '🌡️ Morno', etapa: 'Contatado' },
+    { nome: 'Mariana Santos', wpp: '(18) 97654-3210', obj: 'Para meu filho(a)', nivel: 'Zero — nunca usei', periodo: 'Tarde', origem: 'Google', score: '🔥 Quente', etapa: 'Interessado' },
+    { nome: 'João Pedro', wpp: '(18) 96543-2109', obj: 'Abrir meu negócio', nivel: 'Intermediário', periodo: 'Sábado', origem: 'Facebook', score: '❄️ Frio', etapa: 'Agendado' },
+    { nome: 'Fernanda Costa', wpp: '(18) 95432-1098', obj: 'Uso pessoal / família', nivel: 'Básico — uso pouco', periodo: 'Manhã', origem: 'Panfleto', score: '🌡️ Morno', etapa: 'Matriculado' },
+    { nome: 'Roberto Lima', wpp: '(18) 94321-0987', obj: 'Estudos / faculdade', nivel: 'Zero — nunca usei', periodo: 'Noite', origem: 'Anúncio', score: '❄️ Frio', etapa: 'Perdido' }
+  ];
+  for (let i = 0; i < ss.length; i++) {
+    const x = ss[i];
+    const lead = {
+      ...x, id: 's' + (now.getTime() + i), ts: now.getTime() - i * 1000,
+      email: '', data: now.toLocaleDateString('pt-BR'),
+      hora: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+      motivacao: 'Demo', para: 'mim', idade: '', inicio: 'O quanto antes',
+      notas: [], fonte: 'demo', proximaAcao: 'Primeiro contato', escola: 'Bolsão Informática 2.0'
+    };
+    leads.unshift(lead);
+    if (sbReady()) { try { await sbUpsert(lToDb(lead)); } catch (e) {} }
+  }
+  lastHash = leads.map(l => l.id).join(',');
+  toLS(); render(); toast('6 leads adicionados!', 'ok');
+}
+
+/* ════════════ FOLLOW-UP TABS ════════════ */
+function fuT(id, btn) {
+  document.querySelectorAll('.fup').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.funb').forEach(b => b.classList.remove('active'));
+  document.getElementById('fu-' + id).classList.add('active'); btn.classList.add('active');
+}
+function mT(btn, gId, msgId) {
+  document.querySelectorAll(`#mb-${gId}>div`).forEach(e => e.style.display = 'none');
+  document.getElementById(msgId).style.display = 'block';
+  btn.closest('.mtabs').querySelectorAll('.mtab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function cpB(id, btn) {
+  const el = document.getElementById(id); if (!el) return;
+  const txt = el.innerText;
+  const ok = () => { btn.textContent = '✓ Copiado!'; btn.classList.add('ok'); setTimeout(() => { btn.innerHTML = '📋 Copiar'; btn.classList.remove('ok'); }, 2200); };
+  if (navigator.clipboard) navigator.clipboard.writeText(txt).then(ok).catch(() => { lcp(txt); ok(); });
+  else { lcp(txt); ok(); }
+}
+function lcp(t) { const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); document.execCommand('copy'); document.body.removeChild(a); }
+
+/* ════════════ FORMULÁRIO ════════════ */
+let fStep = 1;
+const fd = {};
+
+function fGo(n) {
+  if (n > fStep && !fVal(fStep)) return;
+  fColl(fStep);
+  document.getElementById('fs' + fStep).classList.remove('active');
+  fStep = n;
+  document.getElementById('fs' + n).classList.add('active');
+  fDots(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function fVal(s) {
+  let ok = true;
+  if (s === 1) {
+    const nome = fv('f-nome'), wpp = fv('f-wpp').replace(/\D/g, ''), email = fv('f-email');
+    setFE('fe-nome', 'f-nome', !nome);
+    setFE('fe-wpp', 'f-wpp', wpp.length < 10 || wpp.length > 11);
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setFE('fe-email', 'f-email', true); ok = false; }
+    else setFE('fe-email', 'f-email', false);
+    if (!nome || wpp.length < 10) ok = false;
+  }
+  if (s === 2) {
+    setFE('fe-obj', null, !fd.obj);
+    setFE('fe-nivel', null, !fd.nivel);
+    if (!fd.obj || !fd.nivel) ok = false;
+  }
+  return ok;
+}
+function fColl(s) {
+  if (s === 1) { fd.nome = fv('f-nome'); fd.wpp = fv('f-wpp'); fd.email = fv('f-email'); fd.idade = fv('f-idade'); fd.para = document.getElementById('f-para').value; }
+  if (s === 3) { fd.motivacao = fv('f-mot'); fd.origem = document.getElementById('f-orig').value; }
+}
+function selC(el, key) {
+  document.querySelectorAll('#chips-' + key + ' .chip').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel'); fd[key] = el.textContent.replace(/^\S+\s/, '').trim();
+  const e = document.getElementById('fe-' + key); if (e) e.classList.remove('show');
+}
+function fDots() {
+  for (let i = 1; i <= 3; i++) {
+    const d = document.getElementById('sd' + i), l = document.getElementById('sl' + i);
+    if (i < fStep) { d.className = 'sd done'; d.textContent = '✓'; if (l) l.className = 'sl done'; }
+    else if (i === fStep) { d.className = 'sd active'; d.textContent = i; }
+    else { d.className = 'sd'; d.textContent = i; if (l) l.className = 'sl'; }
+  }
+}
+function fScore() {
+  const o = (fd.obj || '').toLowerCase(), ini = (fd.inicio || '').toLowerCase();
+  let s = 0;
+  if (o.includes('emprego') || o.includes('trabalho')) s += 3;
+  else if (o.includes('negócio') || o.includes('negocio')) s += 2; else s += 1;
+  if (ini.includes('quanto antes')) s += 2;
+  else if (ini.includes('próximo') || ini.includes('proximo')) s += 1;
+  return s >= 4 ? '🔥 Quente' : s >= 2 ? '🌡️ Morno' : '❄️ Frio';
+}
+
+async function fSubmit() {
+  fColl(3); if (!fVal(fStep)) return;
+  const btn = document.getElementById('fsub');
+  btn.disabled = true;
+  showSpin(true, 'Enviando seu cadastro...');
+  const now = new Date();
+  const lead = {
+    id: 'lead_' + now.getTime(), ts: now.getTime(),
+    nome: fd.nome, wpp: fd.wpp, email: fd.email || '', idade: fd.idade || '', para: fd.para || '',
+    obj: fd.obj || '', nivel: fd.nivel || '', inicio: fd.inicio || '', periodo: fd.periodo || '',
+    motivacao: fd.motivacao || '', origem: fd.origem || '',
+    score: fScore(), etapa: 'Novo Lead', proximaAcao: 'Primeiro contato',
+    data: now.toLocaleDateString('pt-BR'),
+    hora: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+    notas: [], fonte: 'formulario', escola: 'Bolsão Informática 2.0'
+  };
+  let saved = false;
+  if (sbReady()) {
+    try { await sbUpsert(lToDb(lead)); saved = true; } catch (e) { console.warn('Supabase:', e.message); }
+  }
+  /* fallback localStorage */
+  try {
+    const lista = JSON.parse(localStorage.getItem('bolsao_leads_v2') || '[]');
+    lista.unshift(lead); localStorage.setItem('bolsao_leads_v2', JSON.stringify(lista));
+    if (!saved) saved = true;
+  } catch (e) {}
+  showSpin(false); btn.disabled = false;
+  if (saved) {
+    document.getElementById('fsteps').style.display = 'none';
+    for (let i = 1; i <= 3; i++) { const s = document.getElementById('fs' + i); s.classList.remove('active'); s.style.display = 'none'; }
+    document.getElementById('fsuc').style.display = 'block';
+    document.getElementById('fsuc-nome').textContent = fd.nome.split(' ')[0];
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function fReset() {
+  fStep = 1; Object.keys(fd).forEach(k => delete fd[k]);
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('sel'));
+  document.querySelectorAll('.ferr').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('.fi,.fta').forEach(el => { el.value = ''; el.classList.remove('err'); });
+  document.getElementById('f-para').selectedIndex = 0; document.getElementById('f-orig').selectedIndex = 0;
+  document.getElementById('fsteps').style.display = 'flex';
+  document.getElementById('fsuc').style.display = 'none';
+  for (let i = 1; i <= 3; i++) { const s = document.getElementById('fs' + i); s.style.display = ''; s.classList.toggle('active', i === 1); }
+  fDots(); window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('f-wpp').addEventListener('input', function(e) { maskW(e.target); });
+
+/* ════════════ UTILS ════════════ */
+function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function fv(id) { return document.getElementById(id)?.value?.trim() || ''; }
+function maskW(el) {
+  let r = el.value.replace(/\D/g, '').slice(0, 11);
+  if (!r) { el.value = ''; return; }
+  if (r.length <= 2) el.value = '(' + r;
+  else if (r.length <= 6) el.value = '(' + r.slice(0, 2) + ') ' + r.slice(2);
+  else if (r.length <= 10) el.value = '(' + r.slice(0, 2) + ') ' + r.slice(2, 6) + '-' + r.slice(6);
+  else el.value = '(' + r.slice(0, 2) + ') ' + r.slice(2, 7) + '-' + r.slice(7);
+}
+function setFE(eId, iId, show) {
+  const e = document.getElementById(eId); if (e) e.classList.toggle('show', show);
+  if (iId) { const i = document.getElementById(iId); if (i) i.classList.toggle('err', show); }
+}
+function showSpin(on, txt) {
+  const o = document.getElementById('spin-ov'); o.classList.toggle('show', on);
+  if (txt) document.getElementById('spin-txt').textContent = txt;
+}
+let toastT;
+function toast(m, t) { const e = document.getElementById('toast'); e.textContent = m; e.className = 'toast' + (t ? ' ' + t : ''); e.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => e.classList.remove('show'), 2800); }
+
+/* ════════════ INIT ════════════ */
+initUsers();
+(function() {
+  const sess = getSess();
+  if (sess) {
+    document.addEventListener('click', () => { try { getACtx(); } catch (e) {} }, { once: true });
+    showCRM(sess);
+  }
+})();
+</script>
+</body>
+</html>
